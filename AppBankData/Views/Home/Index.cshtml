@@ -1,0 +1,244 @@
+﻿@model IEnumerable<AppBankData.Models.ChartOperatingSystem>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Operating System Chart</h3>
+
+                <div class="card-tools">
+                    <button type="button"
+                            class="btn btn-tool"
+                            data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="donutChart"
+                        style="
+                        min-height: 400px;
+                        height: 450px;
+                        max-height: 100%;
+                        max-width:100%;
+                      "></canvas>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-success">
+            <div class="card-header">
+                <h3 class="card-title">Capacity Hard drive Chart</h3>
+
+                <div class="card-tools">
+                    <button type="button"
+                            class="btn btn-tool"
+                            data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="pieChart"
+                        style="
+                        min-height: 400px;
+                        height: 450px;
+                        max-height:100%;
+                        max-width: 100%;
+                      "></canvas>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+@section scripts{
+    <script>
+  $(document).ready(function () {
+    $.ajax({
+      url: '@Url.Action("GetOperatingSystemData", "Chart")', // Ganti 'YourControllerName' dengan nama controller Anda
+      type: "GET",
+      dataType: "json",
+      success: function (response) {
+        console.log("Data received:", response); // Debugging untuk melihat data yang diterima
+        var osLabels = [];
+        var osData = [];
+
+        // Loop melalui data yang dikembalikan
+        response.data.forEach(function (item) {
+          osLabels.push(item.OS); // Mengisi label dengan nama OS
+          osData.push(item.Count); // Mengisi data dengan jumlah dari setiap OS
+        });
+
+        // Menghitung total data
+        var totalData = osData.reduce((acc, val) => acc + val, 0);
+        console.log("Total Count:", totalData);
+
+        // Generate random colors for each dataset entry
+        var backgroundColors = osData.map(function () {
+          return (
+            "rgba(" +
+            Math.floor(Math.random() * 256) +
+            "," +
+            Math.floor(Math.random() * 256) +
+            "," +
+            Math.floor(Math.random() * 256) +
+            ",1)"
+          ); // 0.7 untuk transparansi
+        });
+
+        var donutChartCanvas = $("#donutChart").get(0).getContext("2d");
+        var donutData = {
+          labels: osLabels,
+          datasets: [
+            {
+              data: osData,
+              backgroundColor: backgroundColors,
+            },
+          ],
+        };
+        var donutOptions = {
+          maintainAspectRatio: false,
+          responsive: true,
+          tooltips: {
+            callbacks: {
+                  label: function (tooltipItem, data) {
+                var dataset = data.datasets[tooltipItem.datasetIndex];
+                var value = dataset.data[tooltipItem.index];
+                var total = totalData;
+                var percentage = ((value / total) * 100).toFixed(2);
+                var label = data.labels[tooltipItem.index] || "";
+                return (
+                  label + ": " + value + " / " + total + " (" + percentage + "%)"
+                );
+              },
+            },
+          },
+            plugins: {
+                datalabels: {
+                    color: '#fff', // Warna teks
+                    formatter: function (value, context) {
+                        var percentage = ((value / totalData) * 100).toFixed(2);
+                        return percentage + '%';
+                    },
+                    anchor: 'center',
+                    align: 'center',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                },
+            },
+        };
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        new Chart(donutChartCanvas, {
+          type: "doughnut",
+          data: donutData,
+          options: donutOptions,
+        });
+      },
+    });
+  });
+
+  //------------- //- PIE CHART HARDISK - //-------------
+
+  $(document).ready(function () {
+    $.ajax({
+      url: '@Url.Action("GetCapacityDriveData", "Chart")', // Ganti 'YourControllerName' dengan nama controller Anda
+      type: "GET",
+      dataType: "json",
+      success: function (response) {
+        console.log("Data received:", response); // Debugging untuk melihat data yang diterima
+        var HardiskLabels = [];
+        var HardiskData = [];
+
+        // Loop melalui data yang dikembalikan
+        response.data.forEach(function (item) {
+            HardiskLabels.push(item.Hardisk); // Mengisi label dengan nama OS
+            HardiskData.push(item.Count); // Mengisi data dengan jumlah dari setiap OS
+        });
+
+        // Menghitung total data
+        var totalData = HardiskData.reduce((acc, val) => acc + val, 0);
+        console.log("Total Count:", totalData);
+
+        // Generate random colors for each dataset entry
+        var backgroundColors = HardiskData.map(function () {
+          return (
+            "rgba(" +
+            Math.floor(Math.random() * 256) +
+            "," +
+            Math.floor(Math.random() * 256) +
+            "," +
+            Math.floor(Math.random() * 256) +
+            ",0.8)"
+          ); // 0.7 untuk transparansi
+        });
+
+        // Get context with jQuery - using jQuery's .get() method.
+        var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+          var HardiskData = {
+              labels: HardiskLabels,
+              datasets: [
+                  {
+                      data: HardiskData,
+                      backgroundColor: backgroundColors,
+                  },
+              ],
+          };
+        var pieOptions = {
+          maintainAspectRatio: false,
+            responsive: true,
+            tooltips: {
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        var value = dataset.data[tooltipItem.index];
+                        var total = totalData;
+                        var percentage = ((value / total) * 100).toFixed(2);
+                        var label = data.labels[tooltipItem.index] || "";
+                        return (
+                            label + ": " + value + " / " + total + " (" + percentage + "%)"
+                        );
+                    },
+                },
+            },
+            plugins: {
+                datalabels: {
+                    color: '#ffffff', // Warna teks
+                    formatter: function (value, context) {
+                        var percentage = ((value / totalData) * 100).toFixed(2);
+                        var label = context.chart.data.labels[context.dataIndex];
+                        return percentage + '%';
+                    },
+                    anchor: 'center',
+                    align: 'end',
+                    offset: 40,
+                    font: {
+                        weight: 'bold',
+                        size: 11
+                    },
+                },
+            },
+        };
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        new Chart(pieChartCanvas, {
+          type: "pie",
+          data: HardiskData,
+          options: pieOptions,
+        });
+      },
+    });
+  });
+    </script>
+}

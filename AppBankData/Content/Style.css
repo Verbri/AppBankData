@@ -1,0 +1,112 @@
+﻿/* Set padding to keep content from hitting the edges */
+/*.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}*/
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+
+/* Add custom styling to child table if needed */
+.child-table th {
+    padding: 1px;
+    border: 1px solid #ccc;
+    font-size: 11px;
+   background-color:peachpuff;
+}
+.child-table td {
+    padding: 1px;
+    border: 1px solid #ccc;
+    font-size: 11px;
+/*    background-color: peachpuff;*/
+}
+.table {
+    border-collapse: collapse;
+/*    width: 98%;*/
+}
+    .table th {
+        padding: 5px 5px;
+        text-align: center;
+        font-size: 12px;
+        
+    }
+    .table td {
+        padding: 0.5rem 0.3rem;
+        text-align: left;
+        font-size: 11px;
+        vertical-align: middle;
+    }
+
+th:first-child, td:first-child {
+    position: sticky;
+    z-index: 1; /* Ensure it stays on top when scrolled */
+}
+
+.form-control {
+    border-radius: 10px;
+    border-color: black;
+    background-color:alicebluesnow;
+}
+
+.col-form-label {
+    border-radius: 15px;
+    padding-left: 20px;
+        background-color:ButtonShadow ;
+/*    border: 0.2px solid #000f;*/
+    ;
+}
+aside {
+    font-size: 12px;
+}
+
+/*Untuk Tampilan Loading pada Index / datatables*/
+#loadingSpinner {
+    display: none; /* Awalnya disembunyikan */
+    position: absolute;
+    top: 48%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Pastikan berada di atas tabel */
+}
+
+    #loadingSpinner img {
+        width: 50px; /* Ukuran spinner */
+        height: 50px;
+    }
+.dataTables_wrapper {
+    position: relative; /* Buat posisi relative untuk kontainer tabel */
+}
+
+.card-body {
+    width: 100%; /* Lebar card-body sesuai dengan card */
+    height: 100%; /* Tinggi card-body sesuai dengan card */
+    padding: 20px;
+    overflow: auto; /* Aktifkan scroll jika konten melebihi tinggi card body */
+    box-sizing: border-box;
+}
+/*===============================================================*/
+.btn-edit {
+    color:white;
+    background-color:darkorange;
+}
+
+.btn-tambah {
+    color:blue;
+    background-color:darkgoldenrod;
+}
+
+#myButton {
+    display: none; /* Mulanya disembunyikan */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
