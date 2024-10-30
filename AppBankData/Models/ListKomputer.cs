@@ -147,6 +147,9 @@ namespace AppBankData.Models
         [Display(Name = "Tanggal Update")]
         //[Required(ErrorMessage = "{0} harus diisi.")]
         public string TanggalUpdate { set; get; }
+
+        public ICollection<InstalledAppsProgram> InstalledApps { set; get; }
+        public ICollection<InstalledProgram> InstalledProgram { set; get; }
     }
     public class ListKomputerContext
     {
@@ -334,5 +337,57 @@ namespace AppBankData.Models
             }
         }
 
+        public IEnumerable<InstalledAppsProgram> GetApplicationList()
+        {
+            List<InstalledAppsProgram> list = new List<InstalledAppsProgram>();
+
+            using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
+            {
+                string sqlQuery = "SELECT * FROM DataAplikasi WHERE IsActive= 1";
+
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new InstalledAppsProgram
+                    {
+                        Id_Aplikasi = reader["Id_Aplikasi"].ToString(),
+                        Nama_Aplikasi = reader["Nama_Aplikasi"].ToString()
+
+                    });
+                }
+                con.Close();
+            }
+            return list;
+        }
+
+        public IEnumerable<InstalledProgram> GetProgramList()
+        {
+            List<InstalledProgram> list = new List<InstalledProgram>();
+
+            using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
+            {
+                string sqlQuery = "SELECT * FROM DataProgram WHERE IsActive= 1";
+
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new InstalledProgram
+                    {
+                        Id_Program = reader["Id_Program"].ToString(),
+                        Nama_Program = reader["Nama_Program"].ToString()
+                    });
+                }
+                con.Close();
+            }
+            return list;
+        }
     }
 }

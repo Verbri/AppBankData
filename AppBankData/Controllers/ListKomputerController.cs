@@ -36,7 +36,8 @@ namespace AppBankData.Controllers
 
         public ActionResult Create()
         {
-
+            ViewBag.lstApps = _objListKomputer.GetApplicationList().ToList();
+            ViewBag.lstProgram = _objListKomputer.GetProgramList().ToList();
             return View();
         }
         public ActionResult Details(int? id)
@@ -64,7 +65,8 @@ namespace AppBankData.Controllers
             {
                 return Redirect("~/Home/Index");
             }
-
+            ViewBag.lstApps = _objListKomputer.GetApplicationList().ToList();
+            ViewBag.lstProgram = _objListKomputer.GetProgramList().ToList();
             ListKomputer listKomputer = _objListKomputer.GetListKomputerData(id);
 
             if (listKomputer == null)

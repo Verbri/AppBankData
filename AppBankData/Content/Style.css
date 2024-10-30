@@ -51,9 +51,12 @@ th:first-child, td:first-child {
 }
 
 .col-form-label {
-    border-radius: 15px;
-    padding-left: 20px;
-        background-color:ButtonShadow ;
+    border-radius: 10px;
+    padding-left: 15px;
+    background-color:ButtonFace;
+    display:flex;
+    align-items:center;
+/*    justify-content:center;*/
 /*    border: 0.2px solid #000f;*/
     ;
 }
@@ -109,4 +112,6 @@ aside {
     border-radius: 5px;
     cursor: pointer;
 }
+
+
 
