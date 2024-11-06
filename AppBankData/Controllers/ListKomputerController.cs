@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,7 +11,7 @@ namespace AppBankData.Controllers
 {
     public class ListKomputerController : Controller
     {
-         private ListKomputerContext _objListKomputer = new ListKomputerContext();
+         private readonly ListKomputerContext _objListKomputer = new ListKomputerContext();
         // GET: ListKomputer
         public ActionResult Index()
         {
@@ -19,7 +20,7 @@ namespace AppBankData.Controllers
             var builder = new SqlConnectionStringBuilder(connectionString);
             ViewBag.Database = builder.InitialCatalog;
 
-            ViewBag.Menu = "Index";
+            ViewBag.Menu = "ListKomputer";
             return View();
         }
         public ActionResult LoadData()
@@ -38,9 +39,27 @@ namespace AppBankData.Controllers
         {
             ViewBag.lstApps = _objListKomputer.GetApplicationList().ToList();
             ViewBag.lstProgram = _objListKomputer.GetProgramList().ToList();
+            ViewBag.lstWorkgroup = _objListKomputer.GetWorkgroupList().ToList();
             return View();
         }
-        public ActionResult Details(int? id)
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(ListKomputer listKomputer)
+        {
+            ViewBag.lstApps = _objListKomputer.GetApplicationList().ToList();
+            ViewBag.lstProgram = _objListKomputer.GetProgramList().ToList();
+            ViewBag.lstWorkgroup = _objListKomputer.GetWorkgroupList().ToList();
+            if (ModelState.IsValid)
+            {
+                _objListKomputer.AddKomputer(listKomputer);
+                ViewBag.Message = String.Format("Data Komputer sudah tersimpan");
+               
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+        public ActionResult Details(string id)
         {
             if (id == null)
             {
@@ -48,6 +67,8 @@ namespace AppBankData.Controllers
             }
 
             ListKomputer listKomputer = _objListKomputer.GetListKomputerData(id);
+            listKomputer.ProgramstandarDisplay = string.Join(", ", listKomputer.Programstandar);
+            listKomputer.ProgramimmanuelDisplay = string.Join(", ", listKomputer.Programimmanuel);
 
             if (listKomputer == null)
             {
@@ -58,22 +79,35 @@ namespace AppBankData.Controllers
 
         //--Menampilkan Data yang akan di edit
         [HttpGet]
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(string id)
         {
 
             if (id == null)
             {
                 return Redirect("~/Home/Index");
             }
+            
+            ListKomputer listKomputer = _objListKomputer.GetListKomputerData(id);
+            // Gabungkan List<string> menjadi string yang dipisahkan koma
+
             ViewBag.lstApps = _objListKomputer.GetApplicationList().ToList();
             ViewBag.lstProgram = _objListKomputer.GetProgramList().ToList();
-            ListKomputer listKomputer = _objListKomputer.GetListKomputerData(id);
+            ViewBag.lstWorkgroup = _objListKomputer.GetWorkgroupList().ToList();
+            listKomputer.ProgramstandarDisplay = string.Join(", ", listKomputer.Programstandar);
+            listKomputer.ProgramimmanuelDisplay = string.Join(", ", listKomputer.Programimmanuel);
 
+            var selectedProgramStandar = listKomputer.ProgramstandarDisplay.Split(',').Select(x => x.Trim()).ToList();
+            // Mengirimkan ke ViewBag untuk di-bind di dropdown
+            ViewBag.selectedProgramstandar = selectedProgramStandar;
+            var selectedProgramImmanuel= listKomputer.ProgramimmanuelDisplay.Split(',').Select(x => x.Trim()).ToList();
+            // Mengirimkan ke ViewBag untuk di-bind di dropdown
+            ViewBag.selectedProgramImmanuel = selectedProgramImmanuel;
             if (listKomputer == null)
             {
                 return Redirect("~/Home/Index");
             }
-
+            Console.WriteLine("Programstandar: " + ViewBag.selectedProgramstandar);
+            Console.WriteLine("Programimmanuel: " + ViewBag.selectedProgramImmanuel);
             return View(listKomputer);
         }
 
@@ -81,22 +115,28 @@ namespace AppBankData.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, [Bind] ListKomputer ListKomputer)
+        public ActionResult Edit(string id, [Bind] ListKomputer listKomputer)
         {
-            if (id != ListKomputer.Id)
+            if (id != listKomputer.Id)
             {
                 return RedirectToAction("Index");
             }
-
+            ViewBag.lstApps = _objListKomputer.GetApplicationList().ToList();
+            ViewBag.lstProgram = _objListKomputer.GetProgramList().ToList();
+            ViewBag.lstWorkgroup = _objListKomputer.GetWorkgroupList().ToList();
             if (ModelState.IsValid)
             {
+                // Mengonversi string kembali menjadi list saat menyimpan
+                listKomputer.Programstandar = listKomputer.ProgramstandarDisplay.Split(',').Select(x => x.Trim()).ToList();
+                listKomputer.Programimmanuel = listKomputer.ProgramimmanuelDisplay.Split(',').Select(x => x.Trim()).ToList();
 
-                _objListKomputer.UpdateListKomputer(ListKomputer);
+                
+                _objListKomputer.UpdateListKomputer(listKomputer);
 
                 return RedirectToAction("Index");
             }
 
-            return View(ListKomputer);
+            return View(listKomputer);
         }
     }
 }

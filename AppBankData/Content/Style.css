@@ -37,6 +37,7 @@
         text-align: left;
         font-size: 11px;
         vertical-align: middle;
+        font-weight:600;
     }
 
 th:first-child, td:first-child {
@@ -44,22 +45,17 @@ th:first-child, td:first-child {
     z-index: 1; /* Ensure it stays on top when scrolled */
 }
 
-.form-control {
-    border-radius: 10px;
-    border-color: black;
-    background-color:alicebluesnow;
-}
-
 .col-form-label {
     border-radius: 10px;
-    padding-left: 15px;
-    background-color:ButtonFace;
-    display:flex;
-    align-items:center;
-/*    justify-content:center;*/
-/*    border: 0.2px solid #000f;*/
-    ;
+    padding-left: 10px;
+/*    background-color:black;*/
+    color:black;
+    display: flex;
+    align-items: center;
+    /*    justify-content:center;*/
+    /*    border: 0.2px solid #000f;*/
 }
+
 aside {
     font-size: 12px;
 }
@@ -113,5 +109,32 @@ aside {
     cursor: pointer;
 }
 
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff; /* Warna border */
+    border-radius: 4px; /* Bentuk persegi dengan sudut membulat */
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: inline-flex; /* untuk menjaga alignment centang */
+    align-items: center; /* pastikan centang tetap di tengah */
+    justify-content: center;
+    vertical-align: middle; /* menjaga posisi elemen di garis tengah */
+}
 
+    input[type="checkbox"]:checked {
+/*        background-color: #28fa46;*/
+        border-color: #007bff;
+    }
 
+        input[type="checkbox"]:checked::before {
+            content: '✓';
+            color: black;
+            font-weight: bolder;
+            font-size: 11px;
+            line-height: 20px; /* Sesuaikan agar '✓' berada di tengah */
+        }

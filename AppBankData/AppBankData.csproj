@@ -149,6 +149,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstalledAppsProgramController.cs" />
     <Compile Include="Controllers\ListKomputerController.cs" />
+    <Compile Include="Controllers\WorkgroupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -158,6 +159,7 @@
     <Compile Include="Models\ListKomputer.cs" />
     <Compile Include="Models\LoginView.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\Workgroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2267,12 +2269,14 @@
     <Content Include="Views\ListKomputer\Create.cshtml" />
     <Content Include="Views\ListKomputer\Details.cshtml" />
     <Content Include="Views\ListKomputer\Edit.cshtml" />
+    <Content Include="Views\InstalledAppsProgram\CreateApps.cshtml" />
+    <Content Include="Views\InstalledAppsProgram\Index.cshtml" />
+    <Content Include="Views\InstalledAppsProgram\CreateProgram.cshtml" />
+    <Content Include="Views\Workgroup\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\NewFolder1\" />
-    <Folder Include="Views\InstalledAppsProgram\" />
-    <Folder Include="Views\InstalledApps\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

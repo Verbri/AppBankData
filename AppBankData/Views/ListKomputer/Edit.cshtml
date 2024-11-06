@@ -5,6 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@{
+    var selectedStandard = ViewBag.selectedProgramstandar as List<string>;
+    var selectedImmanuel = ViewBag.selectedProgramImmanuel as List<string>;
+}
+
+<p>Selected Program Standar: @string.Join(", ", selectedStandard ?? new List<string>())</p>
+<p>Selected Program Immanuel: @string.Join(", ", selectedImmanuel ?? new List<string>())</p>
 <div class="row">
     <div class="col-12">
         <div class="card m-0">
@@ -44,7 +51,7 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.Workgroup, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                @Html.EditorFor(model => model.Workgroup, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.DropDownListFor(model => model.Workgroup, new SelectList(ViewBag.lstWorkgroup, "Id_Workgroup", "Nama_Workgroup"), "", new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(model => model.Workgroup, "", new { @class = "text-danger" })
                             </div>
 
@@ -126,33 +133,40 @@
                         </div>
 
                         <div class="form-group row">
+
+
+                            @Html.LabelFor(model => model.Programstandar, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(model => model.ProgramstandarDisplay, new MultiSelectList(ViewBag.lstApps, "Id_Aplikasi", "Nama_Aplikasi", ViewBag.selectedProgramstandar), new { @class = "form-control select2 selectBox", @multiple = "multiple" })
+                                <div class="pt-2">
+                                    <button type='button' class="btn bg-gradient-primary btn-xs" id='selectAll'>Select All</button>
+                                    <button type='button' class="btn bg-gradient-danger btn-xs" id='deselectAll'>Deselect All</button>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Programstandar, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.Programimmanuel, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(model => model.ProgramimmanuelDisplay, new MultiSelectList(ViewBag.lstProgram, "Id_Program", "Nama_Program", ViewBag.selectedProgramImmanuel), new { @class = "form-control select2 selectBoxProgram", @multiple = "multiple" })
+                                <div class="pt-2">
+                                    <button type='button' class="btn bg-gradient-primary btn-xs" id='selectAllProgram'>Select All</button>
+                                    <button type='button' class="btn bg-gradient-danger btn-xs" id='deselectAllProgram'>Deselect All</button>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Programimmanuel, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             @Html.LabelFor(model => model.Logo, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
                                 @Html.EditorFor(model => model.Logo, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Logo, "", new { @class = "text-danger" })
                             </div>
-
-                            @Html.LabelFor(model => model.Programstandar, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.EditorFor(model => model.Programstandar, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Programstandar, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.Programimmanuel, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.EditorFor(model => model.Programimmanuel, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Programimmanuel, "", new { @class = "text-danger" })
-                            </div>
-
                             @Html.LabelFor(model => model.Avg, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
                                 @Html.EditorFor(model => model.Avg, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Avg, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
                         <div class="form-group row">
                             @Html.LabelFor(model => model.Smadav, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
@@ -240,13 +254,13 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.Keterangan1, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                <textarea name="Keterangan2" id="Keterangan2" class="form-control" cols="50" rows="3" maxlength="120"></textarea>
+                                <textarea name="Keterangan1" id="Keterangan1" class="form-control" cols="50" rows="3" maxlength="120"></textarea>
                                 @Html.ValidationMessageFor(model => model.Keterangan1, "", new { @class = "text-danger" })
                             </div>
 
                             @Html.LabelFor(model => model.Keterangan2, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                               <textarea name="Keterangan2" id="Keterangan2" class="form-control" cols="50" rows="3" maxlength="120"></textarea>
+                                <textarea name="Keterangan2" id="Keterangan2" class="form-control" cols="50" rows="3" maxlength="120"></textarea>
                                 @Html.ValidationMessageFor(model => model.Keterangan2, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -271,6 +285,54 @@
     <!-- /.row -->
 </div>
 
+
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+        //Date and time picker
+
+        $(document).ready(function () {
+            $('.select2').select2({
+                placeholder: "Pilih...",
+            });
+             let selectedProgramstandar = @Html.Raw(Json.Encode(ViewBag.selectedProgramstandar));
+    $('.selectBox').val(selectedProgramstandar).trigger('change');
+
+    // Set pilihan yang terpilih untuk Programimmanuel
+    let selectedProgramimmanuel = @Html.Raw(Json.Encode(ViewBag.selectedProgramImmanuel));
+    $('.selectBoxProgram').val(selectedProgramimmanuel).trigger('change');
+        });
+
+        $('#selectAll').click(function () {
+            $('.selectBox option').prop('selected', true);
+            $('.selectBox').trigger("change");
+        });
+        $('#deselectAll').click(function () {
+            $('.selectBox option').prop('selected', false);
+            $('.selectBox').trigger("change");
+        });
+
+        $('#selectAllProgram').click(function () {
+            $('.selectBoxProgram option').prop('selected', true);
+            $('.selectBoxProgram').trigger("change");
+        });
+        $('#deselectAllProgram').click(function () {
+            $('.selectBoxProgram option').prop('selected', false);
+            $('.selectBoxProgram').trigger("change");
+        });
+
+</script>
+    <script>
+        $(function () {
+            $("#reservationdatetime").datetimepicker({
+                icons: { time: "far fa-clock" },
+                format: "YYYY/MM/DD" // Opsional: Tentukan format tanggal
+            });
+        }); // Perbaikan sintaks
+    </script>
+
+    <script>
+    Console.WriteLine("Programstandar: " + ViewBag.selectedProgramstandar);
+        Console.WriteLine("Programimmanuel: " + ViewBag.selectedProgramImmanuel);</script>
 }

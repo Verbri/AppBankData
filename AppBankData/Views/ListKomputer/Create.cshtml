@@ -43,7 +43,7 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.Workgroup, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                @Html.EditorFor(model => model.Workgroup, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.DropDownListFor(model => model.Workgroup, new SelectList(ViewBag.lstWorkgroup, "Id_Workgroup", "Nama_Workgroup"), "", new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(model => model.Workgroup, "", new { @class = "text-danger" })
                             </div>
 
@@ -125,26 +125,32 @@
                         </div>
 
                         <div class="form-group row">
+                            @Html.LabelFor(model => model.Programstandar, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(model => model.Programstandar, new SelectList(ViewBag.lstApps, "Id_Aplikasi", "Nama_Aplikasi"), new { @class = "form-control select2 selectBox", @multiple = "multiple" })
+                                <div class="pt-2">
+                                    <button type='button' class="btn bg-gradient-primary btn-xs" id='selectAll'>Select All</button>
+                                    <button type='button' class="btn bg-gradient-danger btn-xs" id='deselectAll'>Deselect All</button>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Programstandar, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.Programimmanuel, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(model => model.Programimmanuel, new SelectList(ViewBag.lstProgram, "Id_Program", "Nama_Program"), new { @class = "form-control select2 selectBoxProgram", @multiple = "multiple" })
+                                <div class="pt-2">
+                                    <button type='button' class="btn bg-gradient-primary btn-xs" id='selectAllProgram'>Select All</button>
+                                    <button type='button' class="btn bg-gradient-danger btn-xs" id='deselectAllProgram'>Deselect All</button>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Programimmanuel, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             @Html.LabelFor(model => model.Logo, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
                                 @Html.EditorFor(model => model.Logo, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Logo, "", new { @class = "text-danger" })
                             </div>
-
-                            @Html.LabelFor(model => model.Programstandar, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.EditorFor(model => model.Programstandar, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Programstandar, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.Programimmanuel, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.EditorFor(model => model.Programimmanuel, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Programimmanuel, "", new { @class = "text-danger" })
-                            </div>
-
                             @Html.LabelFor(model => model.Avg, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
                                 @Html.EditorFor(model => model.Avg, new { htmlAttributes = new { @class = "form-control" } })
@@ -203,7 +209,13 @@
 
                             @Html.LabelFor(model => model.MaintenanceCPU, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                @Html.EditorFor(model => model.MaintenanceCPU, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
+                                    @Html.EditorFor(model => model.MaintenanceCPU, new { htmlAttributes = new { @class = "form-control datetimepicker-input", @data_target = "#reservationdatetime" } })
+                                  
+                                    <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
                                 @Html.ValidationMessageFor(model => model.MaintenanceCPU, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -239,20 +251,20 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.Keterangan1, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                <textarea name="Keterangan2" id="Keterangan2" class="form-control" cols="50" rows="3" maxlength="120"></textarea>
+                                <textarea name="Keterangan1" id="Keterangan1" class="form-control" cols="50" rows="3" maxlength="120"></textarea>
                                 @Html.ValidationMessageFor(model => model.Keterangan1, "", new { @class = "text-danger" })
                             </div>
 
                             @Html.LabelFor(model => model.Keterangan2, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
-                        <div class="col-md-4">
-                            <textarea name="Keterangan2" id="Keterangan2" class="form-control" cols="50" rows="3" maxlength="120"></textarea>
-                            @Html.ValidationMessageFor(model => model.Keterangan2, "", new { @class = "text-danger" })
-                        </div>
+                            <div class="col-md-4">
+                                <textarea name="Keterangan2" id="Keterangan2" class="form-control" cols="50" rows="3" maxlength="120"></textarea>
+                                @Html.ValidationMessageFor(model => model.Keterangan2, "", new { @class = "text-danger" })
+                            </div>
                         </div>
 
                         <div class="form-group row">
                             <div class="col-md-4">
-                                @Html.EditorFor(model => model.NamaUser, new { htmlAttributes = new { @class = "form-control", @value = "", @hidden="hidden"} })
+                                @Html.EditorFor(model => model.NamaUser, new { htmlAttributes = new { @class = "form-control", @value = "", @hidden = "hidden" } })
 
                             </div>
 
@@ -282,5 +294,40 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        //Date and time picker
 
+        $(document).ready(function () {
+            $('.select2').select2({
+                placeholder: "Pilih...",
+            });
+        });
+
+        $('#selectAll').click(function () {
+            $('.selectBox option').prop('selected', true);
+            $('.selectBox').trigger("change");
+        });
+        $('#deselectAll').click(function () {
+            $('.selectBox option').prop('selected', false);
+            $('.selectBox').trigger("change");
+        });
+
+        $('#selectAllProgram').click(function () {
+            $('.selectBoxProgram option').prop('selected', true);
+            $('.selectBoxProgram').trigger("change");
+        });
+        $('#deselectAllProgram').click(function () {
+            $('.selectBoxProgram option').prop('selected', false);
+            $('.selectBoxProgram').trigger("change");
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $("#reservationdatetime").datetimepicker({
+                icons: { time: "far fa-clock" },
+                format: "YYYY/MM/DD" // Opsional: Tentukan format tanggal
+            });
+        }); // Perbaikan sintaks
+    </script>
 }
