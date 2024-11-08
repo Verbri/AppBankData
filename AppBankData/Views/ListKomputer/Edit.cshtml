@@ -133,8 +133,6 @@
                         </div>
 
                         <div class="form-group row">
-
-
                             @Html.LabelFor(model => model.Programstandar, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
                                 @Html.DropDownListFor(model => model.ProgramstandarDisplay, new MultiSelectList(ViewBag.lstApps, "Id_Aplikasi", "Nama_Aplikasi", ViewBag.selectedProgramstandar), new { @class = "form-control select2 selectBox", @multiple = "multiple" })
