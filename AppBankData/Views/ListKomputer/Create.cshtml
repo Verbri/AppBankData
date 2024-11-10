@@ -151,25 +151,6 @@
                                 @Html.EditorFor(model => model.Logo, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Logo, "", new { @class = "text-danger" })
                             </div>
-                            @Html.LabelFor(model => model.Avg, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.EditorFor(model => model.Avg, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Avg, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.Smadav, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.EditorFor(model => model.Smadav, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Smadav, "", new { @class = "text-danger" })
-                            </div>
-
-                            @Html.LabelFor(model => model.Usbblock, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
-                            <div class="col-md-4">
-                                @Html.EditorFor(model => model.Usbblock, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Usbblock, "", new { @class = "text-danger" })
-                            </div>
                         </div>
 
                         <div class="form-group row">
@@ -276,7 +257,7 @@
                                 <button type="submit" class="btn btn-primary waves-effect waves-light" onclick="return confirm('Apakah anda yakin akan menyimpan?'); return false();">
                                     SIMPAN
                                 </button>
-                                @Html.ActionLink("BATAL", "Index", null, new { @class = "btn btn-secondary", @onclick = "return confirm('Apakah anda yakin batal mengedit?'); return false();" })
+                                @Html.ActionLink("BATAL", "Index", null, new { @class = "btn btn-secondary", @onclick = "return confirm('Apakah anda yakin batal?'); return false();" })
                             </div>
                         </div>
                     </div>

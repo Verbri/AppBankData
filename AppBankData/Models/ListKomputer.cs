@@ -80,7 +80,7 @@ namespace AppBankData.Models
 
         [Display(Name = "Program Immanuel")]
         [Required(ErrorMessage = "{0} harus diisi.")]
-        public List<string> Programimmanuel { set; get; }
+        public List<string> Programimmanuel { set; get; } = new List<string>();
 
         [Display(Name = "Avg")]
         [Required(ErrorMessage = "{0} harus diisi.")]
@@ -121,19 +121,23 @@ namespace AppBankData.Models
 
         [Display(Name = "Maintenance Monitor")]
         [Required(ErrorMessage = "{0} harus diisi.")]
-        public string MaintenanceMonitor { set; get; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? MaintenanceMonitor { set; get; }
 
         [Display(Name = "Maintenance Jaringan")]
         [Required(ErrorMessage = "{0} harus diisi.")]
-        public string MaintenanceJaringan { set; get; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? MaintenanceJaringan { set; get; }
 
         [Display(Name = "Maintenance Printer")]
         [Required(ErrorMessage = "{0} harus diisi.")]
-        public string MaintenancePrinter { set; get; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? MaintenancePrinter { set; get; }
 
         [Display(Name = "Maintenance UPS")]
         [Required(ErrorMessage = "{0} harus diisi.")]
-        public string MaintenanceUPS { set; get; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? MaintenanceUPS { set; get; }
 
         [Display(Name = "Keterangan 1")]
         [Required(ErrorMessage = "{0} harus diisi.")]
@@ -153,7 +157,7 @@ namespace AppBankData.Models
 
         public ICollection<InstalledApps> InstalledApps { set; get; }
         public ICollection<InstalledProgram> InstalledProgram { set; get; }
-        public ICollection<Workgroup> ListWorkgroups{ set; get; }
+        public ICollection<Workgroup> ListWorkgroups { set; get; }
         public string ProgramstandarDisplay { set; get; }
         public string ProgramimmanuelDisplay { set; get; }
     }
@@ -242,10 +246,10 @@ namespace AppBankData.Models
                         Cpu = reader["Cpu"].ToString(),
                         Ups = reader["Ups"].ToString(),
                         MaintenanceCPU = reader["MaintenanceCPU"] as DateTime?,
-                        MaintenanceMonitor = reader["MaintenanceMonitor"].ToString(),
-                        MaintenanceJaringan = reader["MaintenanceJaringan"].ToString(),
-                        MaintenancePrinter = reader["MaintenancePrinter"].ToString(),
-                        MaintenanceUPS = reader["MaintenanceUPS"].ToString(),
+                        MaintenanceMonitor = reader["MaintenanceMonitor"] as DateTime?,
+                        MaintenanceJaringan = reader["MaintenanceJaringan"] as DateTime?,
+                        MaintenancePrinter = reader["MaintenancePrinter"] as DateTime?,
+                        MaintenanceUPS = reader["MaintenanceUPS"] as DateTime?,
                         Keterangan1 = reader["Keterangan1"].ToString(),
                         Keterangan2 = reader["Keterangan2"].ToString(),
                         NamaUser = reader["namauser"].ToString(),
@@ -266,7 +270,7 @@ namespace AppBankData.Models
 
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
-                string SqlQuery = "SELECT * FROM datakomputer Where Id=@Id";
+                string SqlQuery = "SELECT k.Id,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,(SELECT STRING_AGG(a.Nama_Aplikasi, ',')  FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',')  FROM DataProgram p  WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM DataKomputer k WHERE k.Id = @Id";
 
                 SqlCommand cmd = new SqlCommand(SqlQuery, con);
                 cmd.Parameters.AddWithValue("@Id", id);
@@ -294,6 +298,8 @@ namespace AppBankData.Models
                     ListKomputer.Logo = reader["Logo"].ToString();
                     ListKomputer.Programstandar = reader["Programstandar"].ToString().Split(',').ToList();
                     ListKomputer.Programimmanuel = reader["Programimmanuel"].ToString().Split(',').ToList();
+                    ListKomputer.ProgramstandarDisplay = reader["Nama_Aplikasi"].ToString();
+                    ListKomputer.ProgramimmanuelDisplay = reader["Nama_Program"].ToString();
                     ListKomputer.Avg = reader["Avg"].ToString();
                     ListKomputer.Smadav = reader["Smadav"].ToString();
                     ListKomputer.Usbblock = reader["Usbblock"].ToString();
@@ -302,11 +308,11 @@ namespace AppBankData.Models
                     ListKomputer.Keyboard = reader["Keyboard"].ToString();
                     ListKomputer.Cpu = reader["Cpu"].ToString();
                     ListKomputer.Ups = reader["Ups"].ToString();
-                    ListKomputer.MaintenanceCPU = Convert.ToDateTime(reader["MaintenanceCPU"]);
-                    ListKomputer.MaintenanceMonitor = reader["MaintenanceMonitor"].ToString();
-                    ListKomputer.MaintenanceJaringan = reader["MaintenanceJaringan"].ToString();
-                    ListKomputer.MaintenancePrinter = reader["MaintenancePrinter"].ToString();
-                    ListKomputer.MaintenanceUPS = reader["MaintenanceUPS"].ToString();
+                    ListKomputer.MaintenanceCPU = reader["MaintenanceCPU"] as DateTime?;
+                    ListKomputer.MaintenanceMonitor = reader["MaintenanceMonitor"] as DateTime?;
+                    ListKomputer.MaintenanceJaringan = reader["MaintenanceJaringan"] as DateTime?;
+                    ListKomputer.MaintenancePrinter = reader["MaintenancePrinter"] as DateTime?;
+                    ListKomputer.MaintenanceUPS = reader["MaintenanceUPS"] as DateTime?;
                     ListKomputer.Keterangan1 = reader["Keterangan1"].ToString();
                     ListKomputer.Keterangan2 = reader["Keterangan2"].ToString();
                     ListKomputer.NamaUser = reader["namauser"].ToString();
@@ -319,7 +325,7 @@ namespace AppBankData.Models
 
         public void AddKomputer(ListKomputer listKomputer)
         {
-            listKomputer.Id= GenerateNewIdKomputer();
+            listKomputer.Id = GenerateNewIdKomputer();
             string Programstandar = string.Join(",", listKomputer.Programstandar);
             string Programimmanuel = string.Join(",", listKomputer.Programimmanuel);
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
@@ -369,124 +375,191 @@ namespace AppBankData.Models
                     cmd.ExecuteNonQuery();
                     con.Close();
 
-                   
+
                 }
             }
         }
         //Update List Komputer
-        public void UpdateListKomputer(ListKomputer ListKomputer)
+        public void UpdateListKomputer(ListKomputer listKomputer)
         {
+            string Programstandar = string.Join(",", listKomputer.Programstandar);
+            string Programimmanuel = string.Join(",", listKomputer.Programimmanuel);
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
-                string sqlQuery = "UPDATE datakomputer SET Description = '" + ListKomputer.Description + "', Computername = '" + ListKomputer.Computername + "'," +
-                    " Workgroup = '" + ListKomputer.Workgroup + "', Useraccount = '" + ListKomputer.Useraccount + "', Ipaddress = '" + ListKomputer.Ipaddress + "', Access = '" + ListKomputer.Access + "'," +
-                    " Motherboard = '" + ListKomputer.Motherboard + "', Os = '" + ListKomputer.Os + "', Office = '" + ListKomputer.Office + "'," +
-                    " Processor = '" + ListKomputer.Processor + "', Ram = '" + ListKomputer.Ram + "',Printer = '" + ListKomputer.Printer + "'," +
-                    " Lokasi = '" + ListKomputer.Lokasi + "', Logo = '" + ListKomputer.Logo + "', Programstandar = '" + ListKomputer.Programstandar + "', Programimmanuel = '" + ListKomputer.Programimmanuel + "'," +
-                    " Avg = '" + ListKomputer.Avg + "', Smadav = '" + ListKomputer.Smadav + "', Usbblock = '" + ListKomputer.Usbblock + "'," +
-                    " Monitor = '" + ListKomputer.Monitor + "', Mouse = '" + ListKomputer.Mouse + "', Keyboard = '" + ListKomputer.Keyboard + "'," +
-                    " Cpu = '" + ListKomputer.Cpu + "', Ups = '" + ListKomputer.Ups + "', MaintenanceCPU = '" + ListKomputer.MaintenanceCPU + "', MaintenanceMonitor = '" + ListKomputer.MaintenanceMonitor + "'," +
-                    " MaintenanceJaringan = '" + ListKomputer.MaintenanceJaringan + "', MaintenancePrinter = '" + ListKomputer.MaintenancePrinter + "', MaintenanceUPS = '" + ListKomputer.MaintenanceUPS + "',Keterangan1 = '" + ListKomputer.Keterangan1 + "'," +
-                    " Keterangan2 = '" + ListKomputer.Keterangan2 + "', NamaUser = '" + ListKomputer.NamaUser + "', TanggalUpdate = '" + ListKomputer.TanggalUpdate + "' WHERE Id='" + ListKomputer.Id + "'";
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                string sqlQuery = @"UPDATE datakomputer 
+                            SET Description = @Description, 
+                                Computername = @Computername, 
+                                Workgroup = @Workgroup, 
+                                Useraccount = @Useraccount, 
+                                Ipaddress = @Ipaddress, 
+                                Access = @Access, 
+                                Motherboard = @Motherboard, 
+                                Os = @Os, 
+                                Office = @Office, 
+                                Hardisk = @Hardisk, 
+                                Processor = @Processor, 
+                                Ram = @Ram, 
+                                Printer = @Printer, 
+                                Lokasi = @Lokasi, 
+                                Logo = @Logo, 
+                                Programstandar = @Programstandar, 
+                                Programimmanuel = @Programimmanuel, 
+                                Avg = @Avg, 
+                                Smadav = @Smadav, 
+                                Usbblock = @Usbblock, 
+                                Monitor = @Monitor, 
+                                Mouse = @Mouse, 
+                                Keyboard = @Keyboard, 
+                                Cpu = @Cpu, 
+                                Ups = @Ups, 
+                                MaintenanceCPU = @MaintenanceCPU, 
+                                MaintenanceMonitor = @MaintenanceMonitor, 
+                                MaintenanceJaringan = @MaintenanceJaringan, 
+                                MaintenancePrinter = @MaintenancePrinter, 
+                                MaintenanceUPS = @MaintenanceUPS, 
+                                Keterangan1 = @Keterangan1, 
+                                Keterangan2 = @Keterangan2, 
+                                namauser = @NamaUser, 
+                                TanggalUpdate = @TanggalUpdate 
+                            WHERE Id = @Id";
 
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }
-        }
-
-        public void DeleteListKomputer(int? Id)
-        {
-            using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
-            {
-                string sqlQuery = "DELETE FROM DataKomputer WHERE Id=" + Id + "";
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }
-        }
-
-        public IEnumerable<InstalledApps> GetApplicationList()
-        {
-            List<InstalledApps> list = new List<InstalledApps>();
-
-            using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
-            {
-                string sqlQuery = "SELECT * FROM DataAplikasi WHERE IsActive= 1";
-
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                con.Open();
-
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, con))
                 {
-                    list.Add(new InstalledApps
-                    {
-                        Id_Aplikasi = reader["Id_Aplikasi"].ToString(),
-                        Nama_Aplikasi = reader["Nama_Aplikasi"].ToString()
+                    cmd.Parameters.AddWithValue("@Id", listKomputer.Id);
+                    cmd.Parameters.AddWithValue("@Description", listKomputer.Description ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Computername", listKomputer.Computername ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Workgroup", listKomputer.Workgroup ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Useraccount", listKomputer.Useraccount ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Ipaddress", listKomputer.Ipaddress ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Access", listKomputer.Access ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Motherboard", listKomputer.Motherboard ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Os", listKomputer.Os ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Office", listKomputer.Office ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Hardisk", listKomputer.Hardisk ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Processor", listKomputer.Processor ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Ram", listKomputer.Ram ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Printer", listKomputer.Printer ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Lokasi", listKomputer.Lokasi ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Logo", listKomputer.Logo ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Programstandar", Programstandar ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Programimmanuel", Programimmanuel ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Avg", listKomputer.Avg ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Smadav", listKomputer.Smadav ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Usbblock", listKomputer.Usbblock ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Monitor", listKomputer.Monitor ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Mouse", listKomputer.Mouse ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Keyboard", listKomputer.Keyboard ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Cpu", listKomputer.Cpu ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Ups", listKomputer.Ups ?? (object)DBNull.Value);
+                    //cmd.Parameters.Add("@MaintenanceCPU", SqlDbType.DateTime).Value = listKomputer.MaintenanceCPU ?? (object)DBNull.Value;
+                    cmd.Parameters.AddWithValue("@MaintenanceCPU", listKomputer.MaintenanceCPU ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@MaintenanceMonitor", listKomputer.MaintenanceMonitor ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@MaintenanceJaringan", listKomputer.MaintenanceJaringan ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@MaintenancePrinter", listKomputer.MaintenancePrinter ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@MaintenanceUPS", listKomputer.MaintenanceUPS ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Keterangan1", listKomputer.Keterangan1 ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Keterangan2", listKomputer.Keterangan2 ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@namauser", listKomputer.NamaUser ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@TanggalUpdate", DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"));
 
-                    });
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
                 }
-                con.Close();
             }
-            return list;
         }
 
-        public IEnumerable<InstalledProgram> GetProgramList()
-        {
-            List<InstalledProgram> list = new List<InstalledProgram>();
-
-            using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
+            public void DeleteListKomputer(int? Id)
             {
-                string sqlQuery = "SELECT * FROM DataProgram WHERE IsActive= 1";
-
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                con.Open();
-
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
                 {
-                    list.Add(new InstalledProgram
-                    {
-                        Id_Program = reader["Id_Program"].ToString(),
-                        Nama_Program = reader["Nama_Program"].ToString()
-                    });
+                    string sqlQuery = "DELETE FROM DataKomputer WHERE Id=" + Id + "";
+                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
                 }
-                con.Close();
             }
-            return list;
-        }
 
-        public IEnumerable<Workgroup> GetWorkgroupList()
-
-        {
-            List<Workgroup> list = new List<Workgroup>();
-
-            using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
+            public IEnumerable<InstalledApps> GetApplicationList()
             {
-                string sqlQuery = "SELECT * FROM DataWorkgroup";
+                List<InstalledApps> list = new List<InstalledApps>();
 
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                con.Open();
-
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
                 {
-                    list.Add(new Workgroup
+                    string sqlQuery = "SELECT * FROM DataAplikasi WHERE IsActive= 1";
+
+                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                    con.Open();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
                     {
-                        Id_Workgroup = reader["Id_Workgroup"].ToString(),
-                        Nama_Workgroup = reader["Nama_Workgroup"].ToString()
-                    });
+                        list.Add(new InstalledApps
+                        {
+                            Id_Aplikasi = reader["Id_Aplikasi"].ToString(),
+                            Nama_Aplikasi = reader["Nama_Aplikasi"].ToString()
+
+                        });
+                    }
+                    con.Close();
                 }
-                con.Close();
+                return list;
             }
-            return list;
+
+            public IEnumerable<InstalledProgram> GetProgramList()
+            {
+                List<InstalledProgram> list = new List<InstalledProgram>();
+
+                using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
+                {
+                    string sqlQuery = "SELECT * FROM DataProgram WHERE IsActive= 1";
+
+                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                    con.Open();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        list.Add(new InstalledProgram
+                        {
+                            Id_Program = reader["Id_Program"].ToString(),
+                            Nama_Program = reader["Nama_Program"].ToString()
+                        });
+                    }
+                    con.Close();
+                }
+                return list;
+            }
+
+            public IEnumerable<Workgroup> GetWorkgroupList()
+
+            {
+                List<Workgroup> list = new List<Workgroup>();
+
+                using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
+                {
+                    string sqlQuery = "SELECT * FROM DataWorkgroup";
+
+                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                    con.Open();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        list.Add(new Workgroup
+                        {
+                            Id_Workgroup = reader["Id_Workgroup"].ToString(),
+                            Nama_Workgroup = reader["Nama_Workgroup"].ToString()
+                        });
+                    }
+                    con.Close();
+                }
+                return list;
+            }
         }
     }
-}

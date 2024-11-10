@@ -27,7 +27,7 @@ namespace AppBankData.Models
 
     public class WorkgroupContext
     {
-        DBContext dbCont = new DBContext();
+        private readonly DBContext dbCont = new DBContext();
 
         private string GenerateNewIdWorkgroup()
         {

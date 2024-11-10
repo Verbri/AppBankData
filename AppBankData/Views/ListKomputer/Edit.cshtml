@@ -26,13 +26,12 @@
                 </div>
             </div>
             <div class="card-body ">
-                @using (Html.BeginForm("Edit", "ListKomputer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("Edit", "ListKomputer", FormMethod.Post, new { enctype = "multipart/form-data", id = "Create" }))
                 {
                     @Html.AntiForgeryToken()
 
                     <div class="form-horizontal">
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        @Html.HiddenFor(model => model.Id)
 
                         <div class="form-group row">
                             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
@@ -135,7 +134,7 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.Programstandar, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.ProgramstandarDisplay, new MultiSelectList(ViewBag.lstApps, "Id_Aplikasi", "Nama_Aplikasi", ViewBag.selectedProgramstandar), new { @class = "form-control select2 selectBox", @multiple = "multiple" })
+                                @Html.DropDownListFor(model => model.Programstandar, new SelectList(ViewBag.lstApps, "Id_Aplikasi", "Nama_Aplikasi", Model.Programstandar), new { @class = "form-control select2 selectBox", @multiple = "multiple" })
                                 <div class="pt-2">
                                     <button type='button' class="btn bg-gradient-primary btn-xs" id='selectAll'>Select All</button>
                                     <button type='button' class="btn bg-gradient-danger btn-xs" id='deselectAll'>Deselect All</button>
@@ -144,7 +143,7 @@
                             </div>
                             @Html.LabelFor(model => model.Programimmanuel, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.ProgramimmanuelDisplay, new MultiSelectList(ViewBag.lstProgram, "Id_Program", "Nama_Program", ViewBag.selectedProgramImmanuel), new { @class = "form-control select2 selectBoxProgram", @multiple = "multiple" })
+                                @Html.DropDownListFor(model => model.Programimmanuel, new SelectList(ViewBag.lstProgram, "Id_Program", "Nama_Program"), new { @class = "form-control select2 selectBoxProgram", @multiple = "multiple" })
                                 <div class="pt-2">
                                     <button type='button' class="btn bg-gradient-primary btn-xs" id='selectAllProgram'>Select All</button>
                                     <button type='button' class="btn bg-gradient-danger btn-xs" id='deselectAllProgram'>Deselect All</button>
@@ -165,6 +164,7 @@
                                 @Html.ValidationMessageFor(model => model.Avg, "", new { @class = "text-danger" })
                             </div>
                         </div>
+
                         <div class="form-group row">
                             @Html.LabelFor(model => model.Smadav, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
@@ -216,7 +216,13 @@
 
                             @Html.LabelFor(model => model.MaintenanceCPU, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                @Html.EditorFor(model => model.MaintenanceCPU, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="input-group date" id="MaintenanceCPU" data-target-input="nearest">
+                                    @Html.EditorFor(model => model.MaintenanceCPU, new { htmlAttributes = new { @class = "form-control datetimepicker-input", @data_target = "#MaintenanceCPU" } })
+
+                                    <div class="input-group-append" data-target="#MaintenanceCPU" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
                                 @Html.ValidationMessageFor(model => model.MaintenanceCPU, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -224,13 +230,25 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.MaintenanceMonitor, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                @Html.EditorFor(model => model.MaintenanceMonitor, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="input-group date" id="MaintenanceMonitor" data-target-input="nearest">
+                                    @Html.EditorFor(model => model.MaintenanceMonitor, new { htmlAttributes = new { @class = "form-control datetimepicker-input", @data_target = "#MaintenanceMonitor" } })
+
+                                    <div class="input-group-append" data-target="#MaintenanceMonitor" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
                                 @Html.ValidationMessageFor(model => model.MaintenanceMonitor, "", new { @class = "text-danger" })
                             </div>
 
                             @Html.LabelFor(model => model.MaintenanceJaringan, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                @Html.EditorFor(model => model.MaintenanceJaringan, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="input-group date" id="MaintenanceJaringan" data-target-input="nearest">
+                                    @Html.EditorFor(model => model.MaintenanceJaringan, new { htmlAttributes = new { @class = "form-control datetimepicker-input", @data_target = "#MaintenanceJaringan" } })
+
+                                    <div class="input-group-append" data-target="#MaintenanceJaringan" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
                                 @Html.ValidationMessageFor(model => model.MaintenanceJaringan, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -238,13 +256,25 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.MaintenancePrinter, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                @Html.EditorFor(model => model.MaintenancePrinter, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="input-group date" id="MaintenancePrinter" data-target-input="nearest">
+                                    @Html.EditorFor(model => model.MaintenancePrinter, new { htmlAttributes = new { @class = "form-control datetimepicker-input", @data_target = "#MaintenancePrinter" } })
+
+                                    <div class="input-group-append" data-target="#MaintenancePrinter" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
                                 @Html.ValidationMessageFor(model => model.MaintenancePrinter, "", new { @class = "text-danger" })
                             </div>
 
                             @Html.LabelFor(model => model.MaintenanceUPS, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                @Html.EditorFor(model => model.MaintenanceUPS, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="input-group date" id="MaintenanceUPS" data-target-input="nearest">
+                                    @Html.EditorFor(model => model.MaintenanceUPS, new { htmlAttributes = new { @class = "form-control datetimepicker-input", @data_target = "#MaintenanceUPS" } })
+
+                                    <div class="input-group-append" data-target="#MaintenanceUPS" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
                                 @Html.ValidationMessageFor(model => model.MaintenanceUPS, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -252,7 +282,8 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.Keterangan1, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                                <textarea name="Keterangan1" id="Keterangan1" class="form-control" cols="50" rows="3" maxlength="120"></textarea>
+                               
+                                @Html.TextAreaFor(model => model.Keterangan1, htmlAttributes: new { @class = "form-control", cols="50", @rows="3", @maxlength="120" })
                                 @Html.ValidationMessageFor(model => model.Keterangan1, "", new { @class = "text-danger" })
                             </div>
 
@@ -263,8 +294,15 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.NamaUser, new { htmlAttributes = new { @class = "form-control", @value = "", @hidden = "hidden" } })
+
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
-                            <div class="col-5 offset-5">
+                            <div class="col-8 offset-4">
                                 <button type="submit" class="btn btn-primary waves-effect waves-light" onclick="return confirm('Apakah anda yakin akan menyimpan?'); return false();">
                                     SIMPAN
                                 </button>
@@ -273,6 +311,7 @@
                         </div>
                     </div>
                 }
+
 
                 <!-- /.card-body -->
             </div>
@@ -287,14 +326,14 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
         //Date and time picker
 
         $(document).ready(function () {
             $('.select2').select2({
                 placeholder: "Pilih...",
             });
-             let selectedProgramstandar = @Html.Raw(Json.Encode(ViewBag.selectedProgramstandar));
+    let selectedProgramstandar = @Html.Raw(Json.Encode(ViewBag.selectedProgramstandar));
     $('.selectBox').val(selectedProgramstandar).trigger('change');
 
     // Set pilihan yang terpilih untuk Programimmanuel
@@ -320,17 +359,35 @@
             $('.selectBoxProgram').trigger("change");
         });
 
-</script>
+    </script>
     <script>
         $(function () {
-            $("#reservationdatetime").datetimepicker({
+            $("#MaintenanceCPU").datetimepicker({
                 icons: { time: "far fa-clock" },
                 format: "YYYY/MM/DD" // Opsional: Tentukan format tanggal
             });
-        }); // Perbaikan sintaks
+            $("#MaintenanceMonitor").datetimepicker({
+                icons: { time: "far fa-clock" },
+                format: "YYYY/MM/DD" // Opsional: Tentukan format tanggal
+            });
+            $("#MaintenanceJaringan").datetimepicker({
+                icons: { time: "far fa-clock" },
+                format: "YYYY/MM/DD" // Opsional: Tentukan format tanggal
+            });
+            $("#MaintenancePrinter").datetimepicker({
+                icons: { time: "far fa-clock" },
+                format: "YYYY/MM/DD" // Opsional: Tentukan format tanggal
+            });
+            $("#MaintenanceUPS").datetimepicker({
+                icons: { time: "far fa-clock" },
+                format: "YYYY/MM/DD" // Opsional: Tentukan format tanggal
+            });
+        });
     </script>
 
     <script>
-    Console.WriteLine("Programstandar: " + ViewBag.selectedProgramstandar);
+        Console.WriteLine("Programstandar: " + ViewBag.selectedProgramstandar);
         Console.WriteLine("Programimmanuel: " + ViewBag.selectedProgramImmanuel);</script>
 }
+
+

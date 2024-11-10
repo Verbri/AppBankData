@@ -11,47 +11,52 @@
 <div class="row">
     <div class="col-12">
         <div class="card card-primary card-outline card-outline-tabs">
-            <div class="card-header p-0 border-bottom-0">
-                <div class="row">
-                    <div class="col-11">
-                        <ul class="nav nav-tabs" id="tab-listkomputer" role="tablist">
-                            <li class="pt-2 px-3 bg-gradient-gray-dark"><h3 class="card-title font-weight-bold">LIST DATA KOMPUTER</h3></li>
-                            <li class="nav-item">
-                                <a class="nav-link active" id="button-tab-old-listkomputer" data-toggle="pill" href="#tab-old-listkomputer" role="tab" aria-controls="tab-old-listkomputer" aria-selected="true">OLD KOMPUTER</a>
+            <div class="card-header p-1 border-bottom-0">
+                <div class="row align-items-center">
+                    <!-- Menambahkan align-items-center agar elemen berada di tengah secara vertikal -->
+                    <div class="col-10">
+                        <ul class="nav nav-pills p-1" id="tab-listkomputer" role="tablist">
+                            <li class="pt-2 px-3 bg-gradient-gray-dark">
+                                <h3 class="card-title font-weight-bold">&emsp;LIST KOMPUTER&emsp;</h3>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="button-tab-new-listkomputer" data-toggle="pill" href="#tab-new-listkomputer" role="tab" aria-controls="tab-new-listkomputer" aria-selected="false">NEW KOMPUTER</a>
+                                <a class="nav-link active border-button" id="button-tab-data-listkomputer" data-toggle="pill" href="#tab-old-listkomputer" role="tab" aria-controls="tab-old-listkomputer" aria-selected="true">DATA KOMPUTER</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link border-button" id="button-tab-history-listkomputer" data-toggle="pill" href="#tab-new-listkomputer" role="tab" aria-controls="tab-new-listkomputer" aria-selected="false">HISTORY KOMPUTER</a>
                             </li>
                         </ul>
                     </div>
-                    <div class="col-1">
-
-                        <a href="@Url.Action("Create", "ListKomputer")" class="btn btn-icon waves-light  btn-tambah mt-2" data-placement="top" title="New"><i class="fas fa-plus"> ADD</i></a>
-
+                    <div class="col-2 text-right">
+                        <!-- text-right agar tombol Add terposisi di kanan -->
+                        <a href="@Url.Action("Create", "ListKomputer")" class="btn btn-icon waves-light btn-tambah mr-3" id="add-button" data-placement="top" title="New">
+                            <i class="fas fa-plus"></i> ADD
+                        </a>
                     </div>
                 </div>
             </div>
 
+
             @* Search Area *@
             @*<div style="background-color:#f5f5f5; padding-top:10px; font-size:10px">
-                    <div class="col-12">
-                        <div class="form-group row">
-                            @Html.Label("Nama", htmlAttributes: new { @class = "col-1 col-form-label" })
-                            <input type="text" id="Nama" class="form-control col-3 input-sm" />
+            <div class="col-12">
+                <div class="form-group row">
+                    @Html.Label("Nama", htmlAttributes: new { @class = "col-1 col-form-label" })
+                    <input type="text" id="Nama" class="form-control col-3 input-sm" />
 
-                            @Html.Label("Angkatan", htmlAttributes: new { @class = "col-1 col-form-label" })
-                            <input type="text" id="angkatan" class="form-control col-3 input-sm" />
+                    @Html.Label("Angkatan", htmlAttributes: new { @class = "col-1 col-form-label" })
+                    <input type="text" id="angkatan" class="form-control col-3 input-sm" />
 
-                            <button type="button" id="btnSearch" class="btn btn-instagram btn-sm m-l-10"><i class="fas fa-search"></i></button>
-                        </div>
+                    <button type="button" id="btnSearch" class="btn btn-instagram btn-sm m-l-10"><i class="fas fa-search"></i></button>
+                </div>
 
-                    </div>
-                </div>*@
+            </div>
+        </div>*@
 
             <!-- /.card-header -->
             <div class="card-body">
                 <div class="tab-content" id="tab-listkomputer-tabContent">
-                    <div class="tab-pane fade show active" id="tab-old-listkomputer" role="tabpanel" aria-labelledby="button-tab-old-listkomputer" style="width:100%">
+                    <div class="tab-pane fade show active" id="tab-old-listkomputer" role="tabpanel" aria-labelledby="button-tab-data-listkomputer" style="width:100%">
                         <table id="ListKomputersOldTable" class="table table-bordered display" style="width:100%">
                             <thead>
                                 <tr>
@@ -87,7 +92,7 @@
                         </table>
                     </div>
 
-                    <div class="tab-pane fade" id="tab-new-listkomputer" role="tabpanel" aria-labelledby="button-tab-new-listkomputer" style="width:100%">
+                    <div class="tab-pane fade" id="tab-new-listkomputer" role="tabpanel" aria-labelledby="button-tab-history-listkomputer" style="width:100%">
                         <table id="ListKomputersNewTable" class="table table-striped table-bordered table-display " style="width:100%">
                             <thead>
                                 <tr>
@@ -114,7 +119,8 @@
                                     <th width="8%">
                                         @Html.DisplayNameFor(model => model.TanggalUpdate)
                                     </th>
-                                    <th width="14%">&emsp;
+                                    <th width="14%">
+                                        &emsp;
                                     </th>
                                 </tr>
                             </thead>
@@ -138,7 +144,7 @@
     function format(d) {
       // `d` is the original data object for the row
       return `
-    <table class="table child-table display">
+    <table class="table child-table display table-bordered bg-gradient-white">
   <tr>
     <th width="15%"><center>Motherboard</center></th>
     <th width="10%"><center>Processor</center></th>
@@ -337,7 +343,7 @@
         });
     });
 
-
+    //untuk menampilkan loading saat load table
     $(document).on('preXhr.dt', function () {
       $('#loadingSpinner').show();  // Tampilkan spinner saat sedang memuat data
     });
@@ -346,6 +352,20 @@
     $(document).on('xhr.dt', function () {
       $('#loadingSpinner').hide();  // Sembunyikan spinner setelah data selesai dimuat
     });
+
+
+
+        $(document).ready(function () {
+            // Saat tab "DATA KOMPUTER" diklik
+            $('#button-tab-data-listkomputer').on('click', function () {
+                $('#add-button').show(); // Tampilkan tombol "Add"
+            });
+
+            // Saat tab "HISTORY KOMPUTER" diklik
+            $('#button-tab-history-listkomputer').on('click', function () {
+                $('#add-button').hide(); // Sembunyikan tombol "Add"
+            });
+        });
     </script>
 
 }

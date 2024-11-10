@@ -23,13 +23,13 @@ namespace AppBankData.Controllers
             ViewBag.Menu = "ListKomputer";
             return View();
         }
+
         public ActionResult LoadData()
         {
             // dc.Configuration.LazyLoadingEnabled = false; // if your table is relational, contain foreign key
             //List<ListKomputer> lstListKomputer = new List<ListKomputer>();
             var lstListKomputer = _objListKomputer.GetAllListKomputers().ToList();
             var list = lstListKomputer.ToList();
-
 
             return Json(new { data = list }, JsonRequestBehavior.AllowGet);
 
@@ -67,8 +67,8 @@ namespace AppBankData.Controllers
             }
 
             ListKomputer listKomputer = _objListKomputer.GetListKomputerData(id);
-            listKomputer.ProgramstandarDisplay = string.Join(", ", listKomputer.Programstandar);
-            listKomputer.ProgramimmanuelDisplay = string.Join(", ", listKomputer.Programimmanuel);
+            //listKomputer.ProgramstandarDisplay = string.Join(", ", listKomputer.Programstandar);
+            //listKomputer.ProgramimmanuelDisplay = string.Join(", ", listKomputer.ProgramimmanuelDisplay);
 
             if (listKomputer == null)
             {
@@ -93,15 +93,16 @@ namespace AppBankData.Controllers
             ViewBag.lstApps = _objListKomputer.GetApplicationList().ToList();
             ViewBag.lstProgram = _objListKomputer.GetProgramList().ToList();
             ViewBag.lstWorkgroup = _objListKomputer.GetWorkgroupList().ToList();
-            listKomputer.ProgramstandarDisplay = string.Join(", ", listKomputer.Programstandar);
-            listKomputer.ProgramimmanuelDisplay = string.Join(", ", listKomputer.Programimmanuel);
+            //listKomputer.ProgramstandarDisplay = string.Join(", ", listKomputer.Programstandar);
+            //listKomputer.ProgramimmanuelDisplay = string.Join(", ", listKomputer.Programimmanuel);
 
-            var selectedProgramStandar = listKomputer.ProgramstandarDisplay.Split(',').Select(x => x.Trim()).ToList();
-            // Mengirimkan ke ViewBag untuk di-bind di dropdown
-            ViewBag.selectedProgramstandar = selectedProgramStandar;
-            var selectedProgramImmanuel= listKomputer.ProgramimmanuelDisplay.Split(',').Select(x => x.Trim()).ToList();
-            // Mengirimkan ke ViewBag untuk di-bind di dropdown
-            ViewBag.selectedProgramImmanuel = selectedProgramImmanuel;
+            //var selectedProgramStandar = listKomputer.ProgramstandarDisplay.Split(',').Select(x => x.Trim()).ToList();
+            //// Mengirimkan ke ViewBag untuk di-bind di dropdown
+
+            //var selectedProgramImmanuel= listKomputer.ProgramimmanuelDisplay.Split(',').Select(x => x.Trim()).ToList();
+            //// Mengirimkan ke ViewBag untuk di-bind di dropdown
+            ViewBag.selectedProgramstandar = listKomputer.Programstandar;
+            ViewBag.selectedProgramImmanuel = listKomputer.Programimmanuel;
             if (listKomputer == null)
             {
                 return Redirect("~/Home/Index");
@@ -124,13 +125,10 @@ namespace AppBankData.Controllers
             ViewBag.lstApps = _objListKomputer.GetApplicationList().ToList();
             ViewBag.lstProgram = _objListKomputer.GetProgramList().ToList();
             ViewBag.lstWorkgroup = _objListKomputer.GetWorkgroupList().ToList();
+            ViewBag.selectedProgramstandar = listKomputer.Programstandar;
+            ViewBag.selectedProgramImmanuel = listKomputer.Programimmanuel;
             if (ModelState.IsValid)
             {
-                // Mengonversi string kembali menjadi list saat menyimpan
-                listKomputer.Programstandar = listKomputer.ProgramstandarDisplay.Split(',').Select(x => x.Trim()).ToList();
-                listKomputer.Programimmanuel = listKomputer.ProgramimmanuelDisplay.Split(',').Select(x => x.Trim()).ToList();
-
-                
                 _objListKomputer.UpdateListKomputer(listKomputer);
 
                 return RedirectToAction("Index");

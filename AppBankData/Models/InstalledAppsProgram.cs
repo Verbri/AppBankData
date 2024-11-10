@@ -43,7 +43,7 @@ namespace AppBankData.Models
 
     public class AppsProgramContext
         {
-        DBContext dbCont = new DBContext();
+       private readonly DBContext dbCont = new DBContext();
 
         private string GenerateNewIdApps()
         {
