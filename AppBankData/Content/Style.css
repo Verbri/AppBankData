@@ -98,10 +98,11 @@ aside {
 /*Karena Bootstrap mungkin memiliki gaya default untuk elemen <a> dalam tab, coba tambahkan !important pada properti border untuk memaksa border muncul.*/
 /*Kadang-kadang, framework CSS mengatur properti box-sizing ke border-box, yang bisa mempengaruhi tampilan border. Anda dapat mencoba mengatur box-sizing secara eksplisit.*/
 .border-button {
-    border: 1px solid #808080 !important;
+/*    border: 1px solid #808080 !important;
     border-radius: 5px !important;
-    box-sizing: content-box;
-/*    color:black !important;*/
+    box-sizing: content-box;*/
+    color:white !important;
+    font-weight:900;
 }
 
 #myButton {
