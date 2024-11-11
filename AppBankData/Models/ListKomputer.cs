@@ -160,6 +160,7 @@ namespace AppBankData.Models
         public ICollection<Workgroup> ListWorkgroups { set; get; }
         public string ProgramstandarDisplay { set; get; }
         public string ProgramimmanuelDisplay { set; get; }
+        public string NamaWorkgroup { set; get; }
     }
     public class ListKomputerContext
     {
@@ -209,7 +210,7 @@ namespace AppBankData.Models
 
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
-                string sqlQuery = "SELECT * FROM datakomputer";
+                string sqlQuery = "SELECT k.Id,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,wg.Nama_Workgroup,(SELECT STRING_AGG(a.Nama_Aplikasi, ',')  FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',')  FROM DataProgram p  WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM DataKomputer k LEFT JOIN DataWorkgroup wg ON k.Workgroup = wg.Id_Workgroup";
 
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
@@ -223,6 +224,7 @@ namespace AppBankData.Models
                         Description = reader["Description"].ToString(),
                         Computername = reader["Computername"].ToString(),
                         Workgroup = reader["Workgroup"].ToString(),
+                        NamaWorkgroup = reader["Nama_Workgroup"].ToString(),
                         Useraccount = reader["Useraccount"].ToString(),
                         Ipaddress = reader["Ipaddress"].ToString(),
                         Access = reader["Access"].ToString(),
@@ -270,7 +272,7 @@ namespace AppBankData.Models
 
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
-                string SqlQuery = "SELECT k.Id,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,(SELECT STRING_AGG(a.Nama_Aplikasi, ',')  FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',')  FROM DataProgram p  WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM DataKomputer k WHERE k.Id = @Id";
+                string SqlQuery = "SELECT k.Id,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,wg.Nama_Workgroup,(SELECT STRING_AGG(a.Nama_Aplikasi, ',')  FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',')  FROM DataProgram p  WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM DataKomputer k JOIN DataWorkgroup wg ON k.Workgroup = wg.Id_Workgroup WHERE k.Id = @Id";
 
                 SqlCommand cmd = new SqlCommand(SqlQuery, con);
                 cmd.Parameters.AddWithValue("@Id", id);
@@ -284,6 +286,7 @@ namespace AppBankData.Models
                     ListKomputer.Description = reader["Description"].ToString();
                     ListKomputer.Computername = reader["Computername"].ToString();
                     ListKomputer.Workgroup = reader["Workgroup"].ToString();
+                    ListKomputer.NamaWorkgroup = reader["Nama_Workgroup"].ToString();
                     ListKomputer.Useraccount = reader["Useraccount"].ToString();
                     ListKomputer.Ipaddress = reader["Ipaddress"].ToString();
                     ListKomputer.Access = reader["Access"].ToString();
