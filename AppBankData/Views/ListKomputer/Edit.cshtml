@@ -1,4 +1,4 @@
-﻿@model AppBankData.Models.ListKomputer
+@model AppBankData.Models.ListKomputer
 
 @{
     ViewBag.Title = "Edit";
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="card-body ">
-                @using (Html.BeginForm("Edit", "ListKomputer", FormMethod.Post, new { enctype = "multipart/form-data", id = "Create" }))
+                @using (Html.BeginForm("Edit", "ListKomputer", FormMethod.Post, new { enctype = "multipart/form-data", id = "Edit" }))
                 {
                     @Html.AntiForgeryToken()
 
@@ -282,8 +282,8 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.Keterangan1, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
                             <div class="col-md-4">
-                               
-                                @Html.TextAreaFor(model => model.Keterangan1, htmlAttributes: new { @class = "form-control", cols="50", @rows="3", @maxlength="120" })
+
+                                @Html.TextAreaFor(model => model.Keterangan1, htmlAttributes: new { @class = "form-control", cols = "50", @rows = "3", @maxlength = "120" })
                                 @Html.ValidationMessageFor(model => model.Keterangan1, "", new { @class = "text-danger" })
                             </div>
 
@@ -333,12 +333,12 @@
             $('.select2').select2({
                 placeholder: "Pilih...",
             });
-    let selectedProgramstandar = @Html.Raw(Json.Encode(ViewBag.selectedProgramstandar));
-    $('.selectBox').val(selectedProgramstandar).trigger('change');
+        let selectedProgramstandar = @Html.Raw(Json.Encode(ViewBag.selectedProgramstandar));
+        $('.selectBox').val(selectedProgramstandar).trigger('change');
 
-    // Set pilihan yang terpilih untuk Programimmanuel
-    let selectedProgramimmanuel = @Html.Raw(Json.Encode(ViewBag.selectedProgramImmanuel));
-    $('.selectBoxProgram').val(selectedProgramimmanuel).trigger('change');
+        // Set pilihan yang terpilih untuk Programimmanuel
+        let selectedProgramimmanuel = @Html.Raw(Json.Encode(ViewBag.selectedProgramImmanuel));
+        $('.selectBoxProgram').val(selectedProgramimmanuel).trigger('change');
         });
 
         $('#selectAll').click(function () {
@@ -389,5 +389,3 @@
         Console.WriteLine("Programstandar: " + ViewBag.selectedProgramstandar);
         Console.WriteLine("Programimmanuel: " + ViewBag.selectedProgramImmanuel);</script>
 }
-
-

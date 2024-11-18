@@ -1,0 +1,35 @@
+# Indicate this is the root file
+root = true
+
+# Global settings for all files
+[*]
+indent_style = space        # Gunakan spasi untuk indentasi
+indent_size = 4             # Jumlah spasi untuk indentasi
+end_of_line = lf            # Format akhir baris (lf untuk Linux/Mac, crlf untuk Windows)
+charset = utf-8             # Gunakan encoding UTF-8
+trim_trailing_whitespace = true  # Hapus spasi kosong di akhir baris
+insert_final_newline = true # Tambahkan baris baru di akhir file
+
+# Settings for C# files
+[*.cs]
+indent_size = 4             # Indentasi 4 spasi khusus untuk C#
+dotnet_sort_system_directives_first = true # Sortir namespace `System` di awal
+
+# Settings for JSON files
+[*.json]
+indent_style = space
+indent_size = 2             # Indentasi 2 spasi untuk JSON
+
+# Settings for Markdown files
+[*.md]
+trim_trailing_whitespace = false # Jangan hapus spasi kosong (penting untuk Markdown)
+
+# Settings for XML files
+[*.xml]
+indent_style = space
+indent_size = 2             # Indentasi 2 spasi untuk XML
+
+# Settings for JavaScript and CSS files
+[*.{js,css}]
+indent_style = space
+indent_size = 2             # Indentasi 2 spasi untuk JavaScript dan CSS
