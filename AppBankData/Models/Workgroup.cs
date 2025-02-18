@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
@@ -65,8 +65,6 @@ namespace AppBankData.Models
             // Create the new ID with the prefix "App-" and a formatted number (e.g., App-0002)
             return $"Work-{newIdNumber:D5}";
         }
-
-        
 
         public IEnumerable<Workgroup> GetAllWorkgroup()
         {

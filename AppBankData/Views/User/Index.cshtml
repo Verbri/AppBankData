@@ -1,0 +1,243 @@
+@model IEnumerable<AppBankData.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row ">
+    <div class="col-md-6">
+        <div class="card card-lightblue">
+            <div class="card-header font-weight-bold">
+                <h3 class="card-title">TABEL USER</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body ">
+                <table id="TableUser" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="20%">NIK</th>
+                            <th width="40%">Nama</th>
+                            <th width="20%">Bagian</th>
+                            <th width="10%">Status</th>
+                            <th width="10%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+    <div class="col-md-6">
+        <div class="card card-lightblue">
+            <div class="card-header font-weight-bold">
+                <h3 class="card-title">TABEL HAK AKSES</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body ">
+                <table id="TableRole" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="40%">Hak Akses</th>
+                            <th width="40%">Deskripsi</th>
+                            <th width="10%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
+@*Modals untuk Add User*@
+<div id="AddModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <!-- Partial view content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    var TableUser;
+    var TableRole;
+    $(document).ready(function () {
+        function initializeDataTable(tableId, url, columns, dom, initComplete) {
+            return $(tableId).DataTable({
+                responsive: true,
+                ordering: false,
+                scrollY: '340px',
+                //pageLength: 5,
+                lengthChange: false,
+                paging: true,
+                //processing: true,
+                ajax: {
+                    url: url,
+                    type: "POST",
+                    dataType: "json",
+                    dataSrc: "data",
+                    beforeSend: function () {
+                        $('#loadingSpinner').fadeIn(); // Tampilkan spinner sebelum AJAX
+                    },
+                    complete: function () {
+                        $('#loadingSpinner').fadeOut(); // Sembunyikan spinner setelah selesai
+                    }
+                },
+                columns: columns,
+                dom: dom,
+                initComplete: initComplete, // Memanggil fungsi initComplete yang diberikan sebagai parameter
+                language: {
+                    sEmptyTable: "Tidak ada data yang tersedia pada tabel ini",
+                    sProcessing: "Sedang memproses...",
+                    sZeroRecords: "Tidak ditemukan data yang sesuai",
+                    sInfo: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    sInfoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                    sInfoFiltered: "(disaring dari _MAX_ data keseluruhan)",
+                    sSearch: "Cari:",
+                    oPaginate: {
+                        sFirst: "|<",
+                        sPrevious: "<",
+                        sNext: ">",
+                        sLast: ">|"
+                    }
+                }
+            });
+        }
+        TableUser = initializeDataTable('#TableUser', '@Url.Action("LoadDataUser", "User")', [
+            { data: "NIK", autowidth: true },
+            { data: "Nama", autowidth: true },
+            { data: "Bagian", autowidth: true },
+            {
+                data: "Status", render: function (data) {
+                    return `<center><input type="checkbox" ${data ? 'checked' : ''} disabled></center>`;
+                }
+            },
+            {
+                data: "NIK",
+                render: function (data) {
+                    var Edit = '@Url.Action("EditUser", "User")/' + data;
+                    return `<center><a href="${Edit}" class="btn btn-icon waves-light btn-primary btn-xs" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a></center>`;
+                }
+            }
+        ],
+            '<"topUser d-flex justify-content-between"f><"clear">rt<"bottom"lp>',
+            function () { // Fungsi initComplete sebagai parameter
+                // Menambahkan button di container atas di sebelah kanan
+                $(".topUser").append('<a class="btn waves-light btn-tambah User" data-toggle="modal" data-target="#AddUModal"><i class="fas fa-plus"></i></a>');
+            }
+        );
+        TableRole = initializeDataTable('#TableRole', '@Url.Action("LoadDataRole", "Role")', [
+            { data: "Nama_Role", autowidth: true },
+            { data: "Deskripsi", autowidth: true },
+            {
+                data: "Id_Role",
+                render: function (data) {
+                    var Edit = '@Url.Action("Edit", "Role")/' + data;
+                    return `<center><a href="${Edit}" class="btn btn-icon waves-light btn-primary btn-xs" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a></center>`;
+                }
+            }
+        ],
+            '<"topRole d-flex justify-content-between"f><"clear">rt<"bottom"lp>',
+            function () { // Fungsi initComplete sebagai parameter
+                // Menambahkan button di container atas di sebelah kanan
+                $(".topRole").append('<a class="btn waves-light btn-tambah Role" data-toggle="modal" data-target="#AddModal"><i class="fas fa-plus"></i></a>');
+            }
+        );
+    });
+    $(document).on('click', '.User', function () {
+        $.get('@Url.Action("Create", "User")', function (data) {
+            $(".modal-body").html(data);
+            $("#AddModal").modal('show');
+            $('#AddModal').on('shown.bs.modal', function () {
+                $('#NIK').focus();  // Fokuskan input dengan id="Nama_Role" di dalam modal
+            });
+        });
+    });
+    $(document).on('click', '.Role', function () {
+        $.get('@Url.Action("Create", "Role")', function (data) {
+            $(".modal-body").html(data);
+            $("#AddModal").modal('show');
+            $('#AddModal').on('shown.bs.modal', function () {
+                $('#Nama_Role').focus();  // Fokuskan input dengan id="Nama_Role" di dalam modal
+            });
+        });
+    });
+    </script>
+
+    <script>
+        function btnSave(event, formId, tableInstance) {
+            console.log("Tombol diklik, AJAX dimulai...");
+            if (confirm('Apakah yakin disimpan?')) {
+                if (event) event.preventDefault(); // Mencegah reload halaman
+                var form = $(formId).closest('form');
+                console.log("Data yang dikirim:", form.serialize());
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    datatype: "json",
+                    success: function (response) {
+                        console.log("Response dari server:", response);
+                        if (response.status === "success") {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Berhasil!",
+                                text: response.message
+                            }).then(() => {
+                                $("#AddModal").modal("hide"); // Tutup modal setelah sukses
+                                form[0].reset(); // Reset form
+
+                                tableInstance.ajax.reload(null, false); // Perbaikan reload tabel tanpa refresh halaman
+                            });
+                        } else if (response.status === "validation_error") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validasi Gagal!",
+                                html: response.errors.join("<br>") // Tampilkan semua pesan error
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Gagal!",
+                                text: response.message
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Error AJAX:", xhr.responseText);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error!",
+                            text: "Terjadi kesalahan dalam pengiriman data"
+                        });
+                    }
+                });
+            }
+        }
+    </script>
+}

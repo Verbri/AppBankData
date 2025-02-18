@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppBankData", "AppBankData\AppBankData.csproj", "{C36F0B74-09CB-4E4A-BDBE-38AB1C375D3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndentityManagement", "IndentityManagement\IndentityManagement.csproj", "{FEAF3CD7-C300-4F63-A0BF-22301E445643}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityManagement", "IndentityManagement\IdentityManagement.csproj", "{FEAF3CD7-C300-4F63-A0BF-22301E445643}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

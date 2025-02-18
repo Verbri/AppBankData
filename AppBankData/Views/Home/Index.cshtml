@@ -1,11 +1,11 @@
-﻿@{
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="card card-danger">
+<div class="row" style="height: 100%;">
+    <div class="col-md-6" style="height: 100%;">
+        <div class="card card-danger" style="height: 100%;">
             <div class="card-header">
                 <h3 class="card-title">Operating System Chart</h3>
 
@@ -18,11 +18,11 @@
 
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="height: calc(100% - 50px);">
                 <canvas id="donutChart"
                         style="
-                        min-height: 400px;
-                        height: 450px;
+                        min-height: 475px;
+                        height: 100%;
                         max-height: 100%;
                         max-width:100%;
                       "></canvas>
@@ -30,8 +30,8 @@
             <!-- /.card-body -->
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="card card-success">
+    <div class="col-md-6" style="height: 100%;">
+        <div class="card card-success" style="height: 100%;">
             <div class="card-header">
                 <h3 class="card-title">Capacity Hard drive Chart</h3>
 
@@ -40,18 +40,10 @@
                             class="btn btn-tool"
                             data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
-                    </button>
-
-                </div>
+                  </div>
             </div>
-            <div class="card-body">
-                <canvas id="pieChart"
-                        style="
-                        min-height: 400px;
-                        height: 450px;
-                        max-height:100%;
-                        max-width: 100%;
-                      "></canvas>
+            <div class="card-body" style="height: calc(100% - 50px);">
+                <canvas id="pieChart" style="min-height: 475px; height:100%;max-height:100%; max-width: 100%;"></canvas>
             </div>
             <!-- /.card-body -->
         </div>
@@ -106,8 +98,6 @@
           }
 
           var backgroundColors = generateDynamicColors(osData.length);
-
-
         var donutChartCanvas = $("#donutChart").get(0).getContext("2d");
         var donutData = {
           labels: osLabels,

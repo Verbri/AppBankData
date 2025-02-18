@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="keywords" content="" />
@@ -33,9 +33,19 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="~/Content/dist/css/adminlte.css">
     <link rel="stylesheet" href="~/Content/Style.css">
+    <!-- SweetAlert2 -->
+    <link href="~/Content/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css" rel="stylesheet" />
+    <!-- Toastr -->
+    <link href="~/Content/toastr/toastr.min.css" rel="stylesheet" />
+    @*Telerik*@
+    <link href="~/Content/ReportViewer/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="~/Content/ReportViewer/styles/kendo.blueopal.min.css" rel="stylesheet" />
+
+
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-dark">
@@ -62,7 +72,7 @@
                             <i class="fas fa-solid fa-key mr-2"></i>Ganti Password
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
+                        <a href="~/Login/Logout" class="dropdown-item">
                             <i class="fas fa-sign-out-alt"></i> Keluar
                         </a>
                     </div>
@@ -86,7 +96,8 @@
                         <img src="~/img/Default.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">@Session["Nama"]</a>
+                        <a class="brand-text font-weight-bold text-white" style="font-size: 13px;">@Session["Nama"]</a>
+                        <a href="#" class="d-block">@Session["Bagian"]</a>
                     </div>
                 </div>
 
@@ -145,7 +156,7 @@
                         </li>
                         @{
                             // Definisikan array activeMenus untuk memeriksa menu yang aktif
-                            var activeSetting = new List<string> { "Apps&Program", "Workgroup", "" };
+                            var activeSetting = new List<string> { "Apps&Program", "User", "" };
 
                             // Cek apakah ViewBag.ActiveMenu ada dalam array activeMenus
                             var isActiveSetting = activeSetting.Contains(ViewBag.Menu) ? "active" : "";
@@ -163,17 +174,16 @@
                                 <li class="nav-item">
                                     <a href="@Url.Action("Index", "InstalledAppsProgram")" class="nav-link @(ViewBag.Menu == "Apps&Program" ? "active" : "")">
                                         &emsp;<i class="far fa-circle nav-icon"></i>
-                                        <p>APP&PROGRAM</p>
+                                        <p>PARAMETER APPS</p>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="@Url.Action("Index", "Workgroup")" class="nav-link @(ViewBag.Menu == "Workgroup" ? "active" : "")">
+                                    <a href="@Url.Action("Index", "User")" class="nav-link @(ViewBag.Menu == "User" ? "active" : "")">
                                         &emsp;<i class="far fa-circle nav-icon"></i>
                                         <p>
-                                            WORKGROUP
+                                            USER
                                         </p>
-
                                     </a>
                                 </li>
 
@@ -191,6 +201,9 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                    <div id="loadingSpinner">
+                        <img src="~/img/12 segments.gif" alt="Loading..." /> <!-- Gambar spinner -->
+                    </div>
                     @RenderBody()
                 </div>
                 <!-- /.container-fluid -->
@@ -239,9 +252,14 @@
     <script src="~/Content/chart.js/Chart.min.js"></script>
     <script src="~/Content/chart.js/chartjs-plugin-datalabels.min.js"></script>
 
-
     <!-- AdminLTE App -->
     <script src="~/Content/dist/js/adminlte.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="~/Content/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Toastr -->
+    <script src="~/Content/toastr/toastr.min.js"></script>
+    <!--Telerik-->
+    <script src="~/Content/ReportViewer/js/telerikReportViewer-17.0.23.118.min.js"></script>
 
     @RenderSection("scripts", required: false)
 

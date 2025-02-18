@@ -1,13 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using BCrypt.Net;
-using System.Text;
-using System.Web;
-using System.Web.Helpers;
+using IdentityManagement.Utilities;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 
 namespace AppBankData.Models
 {
@@ -32,23 +29,62 @@ namespace AppBankData.Models
         [StringLength(100)]
         public string Bagian { get; set; }
 
-        [Display(Name = "Active")]
+        [Display(Name = "Status")]
+        [Required(ErrorMessage = "{0} harus diisi.")]
+        public string Status { get; set; }
+
         [Required(ErrorMessage = "{0} harus diisi.")]
         [StringLength(100)]
-        public string IsActive { get; set; }
+        public string Role { get; set; }
     }
 
     public class UserContext
     {
         private DBContext dbCont = new DBContext();
-        string password = "";
+        string password;
+        public User AuthenticateUser(string NIK, string password)
+        {
+
+            using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
+            {
+
+                string query = "SELECT * FROM DataUser WHERE Id = @NIK";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@NIK", NIK);
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    string storedPasswordHash = reader["Password"].ToString();
+                    bool status = Convert.ToBoolean(reader["Status"]); // Mengubah nilai Status menjadi boolean
+                    // Verifikasi password yang dimasukkan dengan password hash yang disimpan
+                    if (BCrypt.Net.BCrypt.Verify(password, storedPasswordHash))
+                    {
+                        return new User
+                        {
+                            NIK = reader["Id"].ToString(),
+                            Password = reader["password"].ToString(),
+                            Nama = reader["nama"].ToString(),
+                            Bagian = reader["Bagian"].ToString(),
+                            Role = reader["Role"].ToString(),
+                            Status = status ? "1" : "0", // Mengonversi status ke string "1" atau "0"
+                        };
+                    }
+                }
+                return null;
+            }
+        }
+
         public IEnumerable<User> GetAllUsers()
         {
             List<User> list = new List<User>();
 
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
-                string sqlQuery = "SELECT * FROM Admin";
+                string sqlQuery = "SELECT * FROM DataUser ";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -60,9 +96,8 @@ namespace AppBankData.Models
                         NIK = reader["Id"].ToString(),
                         Password = reader["password"].ToString(),
                         Nama = reader["nama"].ToString(),
-                        IsActive = reader["IsActive"].ToString(),
-                        Bagian = reader["Bagian"].ToString()
-
+                        Status = reader["Status"].ToString(),
+                        Bagian = reader["bagian"].ToString()
                     });
                 }
 
@@ -71,23 +106,40 @@ namespace AppBankData.Models
             return list;
         }
 
-        public void AddUser(RegistrationView registrationView)
+        public void AddUser(User user)
         {
-            password = BCrypt.Net.BCrypt.HashPassword(registrationView.Password);
-
-            using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
+            try
             {
-                string sqlQuery = "INSERT INTO users(Id, Nama, Password, Bagian, IsActive) VALUES('" + registrationView.NIK + "','" + registrationView.Nama + "', " +
-                                  "'" + password + "', '" + registrationView.Bagian + "', '" + registrationView.IsActive + "')";
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
-                //string sqlQuery2 = "INSERT INTO UserRoles( UserID, RoleID) VALUES('" + registrationView.NIK + "', '" + registrationView.RoleID + "') ";
-                //SqlCommand cmd2 = new SqlCommand(sqlQuery2, con);
-                con.Open();
+                using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
+                {
+                    string sqlQuery = "INSERT INTO DataUser (Id, Nama, Password, Bagian, Status, Role) VALUES (@NIK, @Nama, @Password, @Bagian, @Status, @Role)";
 
-                cmd.ExecuteNonQuery();
-                //cmd2.ExecuteNonQuery();
-                con.Close();
+                    using (SqlCommand cmd = new SqlCommand(sqlQuery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@NIK", user.NIK);
+                        cmd.Parameters.AddWithValue("@Nama", user.Nama);
+                        cmd.Parameters.AddWithValue("@Password", password);
+                        cmd.Parameters.AddWithValue("@Bagian", user.Bagian);
+                        cmd.Parameters.AddWithValue("@Status", user.Status);
+                        cmd.Parameters.AddWithValue("@Role", user.Role);
+
+
+                        //string sqlQuery2 = "INSERT INTO UserRoles( UserID, RoleID) VALUES('" + user.NIK + "', '" + user.RoleID + "') ";
+                        //SqlCommand cmd2 = new SqlCommand(sqlQuery2, con);
+                        con.Open();
+
+                        cmd.ExecuteNonQuery();
+                        //cmd2.ExecuteNonQuery();
+                        con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("SQL Error: " + ex.Message);
+                throw;
             }
         }
 
@@ -111,7 +163,8 @@ namespace AppBankData.Models
                     user.Nama = reader["Nama"].ToString();
                     user.Password = reader["Password"].ToString();
                     user.Bagian = reader["Bagian"].ToString();
-                    user.IsActive = reader["IsActive"].ToString();
+                    user.Role = reader["Role"].ToString();
+                    user.Status = reader["Status"].ToString();
                 }
                 con.Close();
             }
@@ -125,7 +178,7 @@ namespace AppBankData.Models
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
                 string sqlQuery = "UPDATE Admin SET password = '" + User.Password + "'," +
-                    "nama ='" + User.Nama + "', Status = '" + User.IsActive + "' WHERE Id ='" + User.NIK + "'";
+                    "nama ='" + User.Nama + "', Status = '" + User.Status + "' WHERE Id ='" + User.NIK + "'";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
 
                 con.Open();
