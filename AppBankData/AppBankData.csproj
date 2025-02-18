@@ -47,18 +47,40 @@
     <Reference Include="BCrypt.Net-Next, Version=4.0.3.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
       <HintPath>..\packages\BCrypt.Net-Next.4.0.3\lib\net472\BCrypt.Net-Next.dll</HintPath>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.Bson.1.0.2\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.6.0.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.6.0\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.6.0\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.6.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -66,6 +88,12 @@
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.0\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Cors, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.3.0\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -75,6 +103,15 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.3.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.3.0\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.3.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.3.0\lib\net45\System.Web.Mvc.dll</HintPath>
@@ -119,10 +156,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Progress\Telerik Reporting R1 2023\Bin\Telerik.Reporting.dll</HintPath>
     </Reference>
+    <Reference Include="Telerik.Reporting.OpenXmlRendering.2.7.2, Version=17.0.23.118, Culture=neutral, PublicKeyToken=a9d7983dfcc261be" />
     <Reference Include="Telerik.Reporting.Service, Version=17.0.23.118, Culture=neutral, PublicKeyToken=a9d7983dfcc261be, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Progress\Telerik Reporting R1 2023\Bin\Telerik.Reporting.Service.dll</HintPath>
     </Reference>
+    <Reference Include="Telerik.Reporting.Services.WebApi, Version=17.0.23.118, Culture=neutral, PublicKeyToken=a9d7983dfcc261be, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Reporting.XpsRendering, Version=17.0.23.118, Culture=neutral, PublicKeyToken=a9d7983dfcc261be" />
+    <Reference Include="Telerik.ReportViewer.Html5.WebForms, Version=17.0.23.118, Culture=neutral, PublicKeyToken=a9d7983dfcc261be, processorArchitecture=MSIL" />
     <Reference Include="Telerik.ReportViewer.Mvc, Version=17.0.23.118, Culture=neutral, PublicKeyToken=a9d7983dfcc261be, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Progress\Telerik Reporting R1 2023\Bin\Telerik.ReportViewer.Mvc.dll</HintPath>
@@ -135,31 +176,35 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ChartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstalledAppsProgramController.cs" />
     <Compile Include="Controllers\ListKomputerController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WorkgroupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Chart.cs" />
+    <Compile Include="Models\ConfigurationHelper.cs" />
     <Compile Include="Models\DBContext.cs" />
     <Compile Include="Models\InstalledAppsProgram.cs" />
     <Compile Include="Models\ListKomputer.cs" />
     <Compile Include="Models\LoginView.cs" />
+    <Compile Include="Models\Parameter.cs" />
+    <Compile Include="Models\Role.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Workgroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Report\PrintLabelKomputer.cs" />
-    <Compile Include="Report\PrintLabelKomputer.Designer.cs">
-      <DependentUpon>PrintLabelKomputer.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-colorpicker\css\bootstrap-colorpicker.css" />
@@ -1850,6 +1895,29 @@
     <Content Include="Content\raphael\raphael.min.js" />
     <Content Include="Content\raphael\raphael.no-deps.js" />
     <Content Include="Content\raphael\raphael.no-deps.min.js" />
+    <Content Include="Content\ReportViewer\js\telerikReportViewer-17.0.23.118.js" />
+    <Content Include="Content\ReportViewer\js\telerikReportViewer-17.0.23.118.min.js" />
+    <Content Include="Content\ReportViewer\js\telerikReportViewer.kendo-17.0.23.118.min.js" />
+    <Content Include="Content\ReportViewer\js\telerikReportViewer.stringResources-17.0.23.118.js" />
+    <Content Include="Content\ReportViewer\styles\blueopal\loading.gif" />
+    <Content Include="Content\ReportViewer\styles\blueopal\sprite.png" />
+    <Content Include="Content\ReportViewer\styles\kendo.blueopal.min.css" />
+    <Content Include="Content\ReportViewer\styles\kendo.common.min.css" />
+    <Content Include="Content\ReportViewer\styles\kendo.common.min.css.README.txt" />
+    <Content Include="Content\ReportViewer\styles\telerikReportViewer-17.0.23.118.css" />
+    <Content Include="Content\ReportViewer\TelerikReporting\js\telerikReportViewer-17.0.23.118.js" />
+    <Content Include="Content\ReportViewer\TelerikReporting\js\telerikReportViewer-17.0.23.118.min.js" />
+    <Content Include="Content\ReportViewer\TelerikReporting\js\telerikReportViewer.kendo-17.0.23.118.min.js" />
+    <Content Include="Content\ReportViewer\TelerikReporting\js\telerikReportViewer.stringResources-17.0.23.118.js" />
+    <Content Include="Content\ReportViewer\TelerikReporting\styles\blueopal\loading.gif" />
+    <Content Include="Content\ReportViewer\TelerikReporting\styles\blueopal\sprite.png" />
+    <Content Include="Content\ReportViewer\TelerikReporting\styles\kendo.blueopal.min.css" />
+    <Content Include="Content\ReportViewer\TelerikReporting\styles\kendo.common.min.css" />
+    <Content Include="Content\ReportViewer\TelerikReporting\styles\kendo.common.min.css.README.txt" />
+    <Content Include="Content\ReportViewer\TelerikReporting\styles\telerikReportViewer-17.0.23.118.css" />
+    <Content Include="Content\ReportViewer\templates\telerikReportViewerTemplate-17.0.23.118.html" />
+    <Content Include="Content\ReportViewer\templates\MyTemplate.html" />
+    <Content Include="Content\ReportViewer\templates\telerikReportViewerTemplate-FA-17.0.23.118.html" />
     <Content Include="Content\select2-bootstrap4-theme\select2-bootstrap4.css" />
     <Content Include="Content\select2-bootstrap4-theme\select2-bootstrap4.min.css" />
     <Content Include="Content\select2\css\select2.css" />
@@ -2090,16 +2158,6 @@
     <Content Include="Content\sweetalert2\sweetalert2.js" />
     <Content Include="Content\sweetalert2\sweetalert2.min.css" />
     <Content Include="Content\sweetalert2\sweetalert2.min.js" />
-    <Content Include="Content\TelerikReporting\js\telerikReportViewer-17.0.23.118.js" />
-    <Content Include="Content\TelerikReporting\js\telerikReportViewer-17.0.23.118.min.js" />
-    <Content Include="Content\TelerikReporting\js\telerikReportViewer.kendo-17.0.23.118.min.js" />
-    <Content Include="Content\TelerikReporting\js\telerikReportViewer.stringResources-17.0.23.118.js" />
-    <Content Include="Content\TelerikReporting\styles\blueopal\loading.gif" />
-    <Content Include="Content\TelerikReporting\styles\blueopal\sprite.png" />
-    <Content Include="Content\TelerikReporting\styles\kendo.blueopal.min.css" />
-    <Content Include="Content\TelerikReporting\styles\kendo.common.min.css" />
-    <Content Include="Content\TelerikReporting\styles\kendo.common.min.css.README.txt" />
-    <Content Include="Content\TelerikReporting\styles\telerikReportViewer-17.0.23.118.css" />
     <Content Include="Content\tempusdominus-bootstrap-4\css\tempusdominus-bootstrap-4.css" />
     <Content Include="Content\tempusdominus-bootstrap-4\css\tempusdominus-bootstrap-4.min.css" />
     <Content Include="Content\tempusdominus-bootstrap-4\js\tempusdominus-bootstrap-4.js" />
@@ -2256,6 +2314,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include=".editorconfig" />
+    <Content Include="Reports\SampleReport.trdp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
@@ -2275,7 +2336,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
@@ -2290,10 +2350,19 @@
     <Content Include="Views\InstalledAppsProgram\CreateProgram.cshtml" />
     <Content Include="Views\Workgroup\Index.cshtml" />
     <Content Include="Views\Workgroup\Create.cshtml" />
+    <Content Include="Views\Shared\_ReportViewer.cshtml" />
+    <Content Include="Views\Home\LabelKomputer.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Shared\LoginLayout.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\Create.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\NewFolder1\" />
+    <Folder Include="Views\Reports\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -2324,9 +2393,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
-    <EmbeddedResource Include="Report\PrintLabelKomputer.resx">
-      <DependentUpon>PrintLabelKomputer.cs</DependentUpon>
-    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IndentityManagement\IdentityManagement.csproj">
+      <Project>{FEAF3CD7-C300-4F63-A0BF-22301E445643}</Project>
+      <Name>IdentityManagement</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
