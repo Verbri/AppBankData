@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using IdentityManagement.Utilities;
 
 namespace AppBankData.Models
 {
@@ -43,10 +44,13 @@ namespace AppBankData.Models
         [StringLength(100)]
         public string Bagian { get; set; }
 
-        [Display(Name = "Active")]
+        [Display(Name = "Status")]
         [Required(ErrorMessage = "{0} harus diisi.")]
-        [StringLength(100)]
-        public string IsActive { get; set; }
+        public string Status { get; set; }
+
+        [Display(Name = "Role")]
+        [Required(ErrorMessage = "{0} harus diisi.")]
+        public string Role { get; set; }
     }
 
     public class GantiPassword

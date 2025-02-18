@@ -1,4 +1,4 @@
-﻿using AppBankData.Models;
+using AppBankData.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,12 +9,10 @@ using System.Web.Mvc;
 
 namespace AppBankData.Controllers
 {
+    [Authorize]
     public class ChartController : Controller
     {
-        DBContext dbContext = new DBContext();
-
-        
-
+        private readonly DBContext dbContext = new DBContext();
 
         // GET: Chart
         public ActionResult Index()

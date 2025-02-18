@@ -11,8 +11,8 @@ namespace AppBankData.Models
     public class ListKomputer
     {
         //[DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Display(Name = "Id")]
-        public string Id { set; get; }
+        [Display(Name = "Id_Komputer")]
+        public string Id_Komputer { set; get; }
 
         [Display(Name = "Deskripsi")]
         [Required(ErrorMessage = "{0} harus diisi.")]
@@ -174,7 +174,7 @@ namespace AppBankData.Models
 
             using (SqlConnection con = new SqlConnection(connectionString: dbCont.GetConnectionString()))
             {
-                string query = "SELECT TOP 1 Id FROM DataKomputer ORDER BY Id DESC";
+                string query = "SELECT TOP 1 Id_Komputer FROM DataKomputer ORDER BY Id_Komputer DESC";
                 SqlCommand cmd = new SqlCommand(query, con);
 
                 con.Open();
@@ -182,7 +182,7 @@ namespace AppBankData.Models
 
                 if (reader.Read())
                 {
-                    lastId = reader["Id"].ToString();
+                    lastId = reader["Id_Komputer"].ToString();
                 }
 
                 reader.Close();
@@ -210,7 +210,7 @@ namespace AppBankData.Models
 
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
-                string sqlQuery = "SELECT k.Id,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,wg.Nama_Workgroup,(SELECT STRING_AGG(a.Nama_Aplikasi, ',')  FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',')  FROM DataProgram p  WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM DataKomputer k LEFT JOIN DataWorkgroup wg ON k.Workgroup = wg.Id_Workgroup";
+                string sqlQuery = "SELECT k.Id_Komputer,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,wg.Nama_Workgroup,(SELECT STRING_AGG(a.Nama_Aplikasi, ',')  FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',')  FROM DataProgram p  WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM DataKomputer k LEFT JOIN DataWorkgroup wg ON k.Workgroup = wg.Id_Workgroup";
 
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
@@ -220,7 +220,7 @@ namespace AppBankData.Models
                 {
                     list.Add(new ListKomputer
                     {
-                        Id = reader["Id"].ToString(),
+                        Id_Komputer = reader["Id_Komputer"].ToString(),
                         Description = reader["Description"].ToString(),
                         Computername = reader["Computername"].ToString(),
                         Workgroup = reader["Workgroup"].ToString(),
@@ -266,23 +266,23 @@ namespace AppBankData.Models
         }
 
         //Get all ListKomputer details
-        public ListKomputer GetListKomputerData(string id)
+        public ListKomputer GetListKomputerData(string Id_Komputer)
         {
             ListKomputer ListKomputer = new ListKomputer();
 
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
-                string SqlQuery = "SELECT k.Id,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,wg.Nama_Workgroup,(SELECT STRING_AGG(a.Nama_Aplikasi, ',')  FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',')  FROM DataProgram p  WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM DataKomputer k JOIN DataWorkgroup wg ON k.Workgroup = wg.Id_Workgroup WHERE k.Id = @Id";
+                string SqlQuery = "SELECT k.Id_Komputer,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,wg.Nama_Workgroup,(SELECT STRING_AGG(a.Nama_Aplikasi, ',')  FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',')  FROM DataProgram p  WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM DataKomputer k JOIN DataWorkgroup wg ON k.Workgroup = wg.Id_Workgroup WHERE k.Id_Komputer = @Id_Komputer";
 
                 SqlCommand cmd = new SqlCommand(SqlQuery, con);
-                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@Id_Komputer", Id_Komputer);
                 con.Open();
 
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    ListKomputer.Id = reader["Id"].ToString();
+                    ListKomputer.Id_Komputer = reader["Id_Komputer"].ToString();
                     ListKomputer.Description = reader["Description"].ToString();
                     ListKomputer.Computername = reader["Computername"].ToString();
                     ListKomputer.Workgroup = reader["Workgroup"].ToString();
@@ -328,15 +328,15 @@ namespace AppBankData.Models
 
         public void AddKomputer(ListKomputer listKomputer)
         {
-            listKomputer.Id = GenerateNewIdKomputer();
+            listKomputer.Id_Komputer = GenerateNewIdKomputer();
             string Programstandar = string.Join(",", listKomputer.Programstandar);
             string Programimmanuel = string.Join(",", listKomputer.Programimmanuel);
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
-                string sqlQuery = @"INSERT INTO datakomputer(Id,Description,Computername,Workgroup,Useraccount,Ipaddress,Access,Motherboard,Os,Office,Hardisk,Processor,Ram,Printer,Lokasi,Logo,Programstandar,Programimmanuel,Avg,Smadav,Usbblock,Monitor,Mouse,Keyboard,Cpu,Ups,MaintenanceCPU,MaintenanceMonitor,MaintenanceJaringan,MaintenancePrinter,MaintenanceUPS,Keterangan1,Keterangan2,namauser,TanggalUpdate) VALUES (@Id,@Description,@Computername,@Workgroup,@Useraccount,@Ipaddress,@Access,@Motherboard,@Os,@Office,@Hardisk,@Processor,@Ram,@Printer,@Lokasi,@Logo,@Programstandar,@Programimmanuel,@Avg,@Smadav,@Usbblock,@Monitor,@Mouse,@Keyboard,@Cpu,@Ups,@MaintenanceCPU,@MaintenanceMonitor,@MaintenanceJaringan,@MaintenancePrinter,@MaintenanceUPS,@Keterangan1,@Keterangan2,@Namauser,@TanggalUpdate)";
+                string sqlQuery = @"INSERT INTO datakomputer(Id_Komputer,Description,Computername,Workgroup,Useraccount,Ipaddress,Access,Motherboard,Os,Office,Hardisk,Processor,Ram,Printer,Lokasi,Logo,Programstandar,Programimmanuel,Avg,Smadav,Usbblock,Monitor,Mouse,Keyboard,Cpu,Ups,MaintenanceCPU,MaintenanceMonitor,MaintenanceJaringan,MaintenancePrinter,MaintenanceUPS,Keterangan1,Keterangan2,namauser,TanggalUpdate) VALUES (@Id_Komputer,@Description,@Computername,@Workgroup,@Useraccount,@Ipaddress,@Access,@Motherboard,@Os,@Office,@Hardisk,@Processor,@Ram,@Printer,@Lokasi,@Logo,@Programstandar,@Programimmanuel,@Avg,@Smadav,@Usbblock,@Monitor,@Mouse,@Keyboard,@Cpu,@Ups,@MaintenanceCPU,@MaintenanceMonitor,@MaintenanceJaringan,@MaintenancePrinter,@MaintenanceUPS,@Keterangan1,@Keterangan2,@Namauser,@TanggalUpdate)";
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, con))
                 {
-                    cmd.Parameters.AddWithValue("@Id", listKomputer.Id);
+                    cmd.Parameters.AddWithValue("@Id_Komputer", listKomputer.Id_Komputer);
                     cmd.Parameters.AddWithValue("@Description", listKomputer.Description ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@Computername", listKomputer.Computername ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@Workgroup", listKomputer.Workgroup ?? (object)DBNull.Value);
@@ -424,11 +424,11 @@ namespace AppBankData.Models
                                 Keterangan2 = @Keterangan2, 
                                 namauser = @NamaUser, 
                                 TanggalUpdate = @TanggalUpdate 
-                            WHERE Id = @Id";
+                            WHERE Id_Komputer = @Id_Komputer";
 
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, con))
                 {
-                    cmd.Parameters.AddWithValue("@Id", listKomputer.Id);
+                    cmd.Parameters.AddWithValue("@Id_Komputer", listKomputer.Id_Komputer);
                     cmd.Parameters.AddWithValue("@Description", listKomputer.Description ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@Computername", listKomputer.Computername ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@Workgroup", listKomputer.Workgroup ?? (object)DBNull.Value);
@@ -472,11 +472,11 @@ namespace AppBankData.Models
             }
         }
 
-        public void DeleteListKomputer(int? Id)
+        public void DeleteListKomputer(String Id_Komputer)
         {
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
-                string sqlQuery = "DELETE FROM DataKomputer WHERE Id=" + Id + "";
+                string sqlQuery = "DELETE FROM DataKomputer WHERE Id_Komputer=" + Id_Komputer + "";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
 
                 con.Open();
@@ -571,8 +571,8 @@ namespace AppBankData.Models
     public class ListHistoryKomputer
     {
         //[DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Display(Name = "Id")]
-        public string Id { set; get; }
+        [Display(Name = "Id_Komputer")]
+        public string Id_Komputer { set; get; }
 
         [Display(Name = "Deskripsi")]
         [Required(ErrorMessage = "{0} harus diisi.")]
@@ -732,7 +732,7 @@ namespace AppBankData.Models
 
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
-                string sqlQuery = "SELECT k.Id,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,wg.Nama_Workgroup,(SELECT STRING_AGG(a.Nama_Aplikasi, ',') FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',') FROM DataProgram p WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM log_DataKomputer k LEFT JOIN DataWorkgroup wg ON k.Workgroup = wg.Id_Workgroup";
+                string sqlQuery = "SELECT k.Id_Komputer,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,wg.Nama_Workgroup,(SELECT STRING_AGG(a.Nama_Aplikasi, ',') FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',') FROM DataProgram p WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM log_DataKomputer k LEFT JOIN DataWorkgroup wg ON k.Workgroup = wg.Id_Workgroup";
 
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
@@ -742,7 +742,7 @@ namespace AppBankData.Models
                 {
                     list.Add(new ListKomputer
                     {
-                        Id = reader["Id"].ToString(),
+                        Id_Komputer = reader["Id_Komputer"].ToString(),
                         Description = reader["Description"].ToString(),
                         Computername = reader["Computername"].ToString(),
                         Workgroup = reader["Workgroup"].ToString(),
@@ -788,23 +788,23 @@ namespace AppBankData.Models
         }
 
         //Get all ListKomputer details
-        public ListKomputer GetListKomputerData(string id)
+        public ListKomputer GetListKomputerData(string Id_Komputer)
         {
             ListKomputer ListKomputer = new ListKomputer();
 
             using (SqlConnection con = new SqlConnection(dbCont.GetConnectionString()))
             {
-                string SqlQuery = "SELECT k.Id,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,wg.Nama_Workgroup,(SELECT STRING_AGG(a.Nama_Aplikasi, ',')  FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',')  FROM DataProgram p  WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM log_DataKomputer k JOIN DataWorkgroup wg ON k.Workgroup = wg.Id_Workgroup WHERE k.Id = @Id";
+                string SqlQuery = "SELECT k.Id_Komputer,k.Description,k.Computername,k.Workgroup,k.Useraccount,k.Ipaddress,k.Access,k.Motherboard,k.Os,k.Office,k.Hardisk,k.Processor,k.Ram,k.Printer,k.Lokasi,k.Logo,k.programimmanuel,k.programstandar,wg.Nama_Workgroup,(SELECT STRING_AGG(a.Nama_Aplikasi, ',')  FROM DataAplikasi a  WHERE a.Id_Aplikasi IN (SELECT value FROM STRING_SPLIT(k.Programstandar, ','))) AS Nama_Aplikasi,(SELECT STRING_AGG(p.Nama_Program, ',')  FROM DataProgram p  WHERE p.Id_Program IN (SELECT value FROM STRING_SPLIT(k.Programimmanuel, ','))) AS Nama_Program,k.Avg,k.Smadav,k.Usbblock,k.Monitor,k.Mouse,k.Keyboard,k.Cpu,k.Ups,k.MaintenanceCPU,k.MaintenanceMonitor,k.MaintenanceJaringan,k.MaintenancePrinter,k.MaintenanceUPS,k.Keterangan1,k.Keterangan2,k.NamaUser,k.TanggalUpdate FROM log_DataKomputer k JOIN DataWorkgroup wg ON k.Workgroup = wg.Id_Workgroup WHERE k.Id_Komputer = @Id_Komputer";
 
                 SqlCommand cmd = new SqlCommand(SqlQuery, con);
-                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@Id_Komputer", Id_Komputer);
                 con.Open();
 
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    ListKomputer.Id = reader["Id"].ToString();
+                    ListKomputer.Id_Komputer = reader["Id_Komputer"].ToString();  
                     ListKomputer.Description = reader["Description"].ToString();
                     ListKomputer.Computername = reader["Computername"].ToString();
                     ListKomputer.Workgroup = reader["Workgroup"].ToString();

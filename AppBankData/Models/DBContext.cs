@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace AppBankData.Models
 
         public string GetConnectionString()
         {
-            string dbConn = ConfigurationManager.ConnectionStrings["SERVERDATA"].ConnectionString;
+            string dbConn = ConfigurationManager.ConnectionStrings["BANKDATATEST"].ConnectionString;
             return dbConn;
         }
     }

@@ -1,18 +1,22 @@
-﻿using AppBankData.Models;
+using AppBankData.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using Telerik.Reporting;
 
 namespace AppBankData.Controllers
 {
+    [Authorize]
     public class ListKomputerController : Controller
     {
          private readonly ListKomputerContext _objListKomputer = new ListKomputerContext();
         // GET: ListKomputer
+        
         public ActionResult Index()
         {
             DBContext dbContext = new DBContext();
@@ -116,9 +120,9 @@ namespace AppBankData.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(string id, [Bind] ListKomputer listKomputer)
+        public ActionResult Edit(string Id_Komputer, [Bind] ListKomputer listKomputer)
         {
-            if (id != listKomputer.Id)
+            if (Id_Komputer != listKomputer.Id_Komputer)
             {
                 return RedirectToAction("Index");
             }
@@ -135,6 +139,33 @@ namespace AppBankData.Controllers
             }
 
             return View(listKomputer);
+        }
+        public ActionResult LoadReport(String Id)
+        {
+            string reportFolder = ConfigurationHelper.GetConfigurationValue("ReportFolder");
+            if (string.IsNullOrEmpty(reportFolder))
+            {
+                return new HttpNotFoundResult("Folder laporan tidak ditemukan.");
+            }
+            string reportPath = Path.Combine(reportFolder, "LabelKomputer.trdx");
+            // Buat UriReportSource dengan parameter ID
+            if (!System.IO.File.Exists(reportPath))
+            {
+                return new HttpNotFoundResult("File laporan tidak ditemukan.");
+            }
+
+            // Buat UriReportSource dengan URL laporan
+            var reportSource = new UriReportSource
+            {
+                Uri = reportPath
+            };
+
+            // Tambahkan parameter ke laporan
+            reportSource.Parameters.Add("Id_Komputer", Id);
+
+            // Teruskan sumber laporan ke partial view
+            ViewBag.ReportSource = reportSource;
+            return PartialView("_ReportViewer");
         }
     }
 }

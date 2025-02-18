@@ -1,4 +1,4 @@
-﻿/* Set padding to keep content from hitting the edges */
+/* Set padding to keep content from hitting the edges */
 /*.body-content {
     margin-top: 15px;
     padding-left: 15px;
@@ -22,24 +22,32 @@
     font-size: 11px;
 /*    background-color: peachpuff;*/
 }
+
+.card-header {
+  padding: 5px 20px;
+  justify-content:center;
+}
+
 .table {
     border-collapse: collapse;
-/*    width: 98%;*/
+    width: 80%;
 }
     .table th {
-        padding: 5px 5px;
-        text-align: center;
+        padding: 3px 2px;
+/*        text-align: center;*/
         font-size: 12px;
         
     }
     .table td {
-        padding: 0.5rem 0.3rem;
+        padding: 0.2rem 0.3rem;
         text-align: left;
         font-size: 11px;
         vertical-align: middle;
         font-weight:600;
     }
-
+  .table.table-bordered th {
+    text-align: center; /* Text align ke tengah */
+  }
 th:first-child, td:first-child {
     position: sticky;
     z-index: 1; /* Ensure it stays on top when scrolled */
@@ -81,7 +89,7 @@ aside {
 .card-body {
     width: 100%; /* Lebar card-body sesuai dengan card */
     height: 100%; /* Tinggi card-body sesuai dengan card */
-    padding: 20px;
+    padding: 10px;
     overflow: auto; /* Aktifkan scroll jika konten melebihi tinggi card body */
     box-sizing: border-box;
 }
@@ -105,9 +113,9 @@ aside {
     font-weight:900;
 }
 
-#myButton {
-    display: none; /* Mulanya disembunyikan */
-    position: fixed;
+/*#myButton {
+    display: none;*/ /* Mulanya disembunyikan */
+    /*position: fixed;
     bottom: 20px;
     right: 20px;
     padding: 10px 20px;
@@ -116,7 +124,7 @@ aside {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
+}*/
 
 input[type="checkbox"] {
     -webkit-appearance: none;

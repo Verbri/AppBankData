@@ -1,4 +1,4 @@
-﻿using AppBankData.Models;
+using AppBankData.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,13 +9,10 @@ using System.Web.Mvc;
 
 namespace AppBankData.Controllers
 {
+    [Authorize]
     public class InstalledAppsProgramController : Controller
     {
         private readonly AppsProgramContext _objListApps = new AppsProgramContext();
-
-        // GET: InstalledAppsProgram
-
-       
 
 
         public ActionResult Index()

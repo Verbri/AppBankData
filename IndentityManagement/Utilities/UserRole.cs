@@ -4,22 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IndentityManagement.Utilities
+namespace IdentityManagement.Utilities
 {
-    public class User
+    public enum UserRoles
     {
-        public string UserId { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public UserStatus Status { get; set; }
-        public int RoleId { get; set; }
-        public Role Role { get; set; }
-
-    }
-
-    public class Role
-    {
-        public int RoleId { get; set; }
-        public string RoleName { get; set; }
+        SuperAdmin,
+        Admin,
+        User
     }
 }

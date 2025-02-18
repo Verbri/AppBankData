@@ -5,13 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div id="loadingSpinner">
-    <img src="~/img/12 segments.gif" alt="Loading..." /> <!-- Gambar spinner -->
-</div>
 <div class="row">
     <div class="col-12">
         <div class="card card-primary card-outline card-outline-tabs">
-            <div class="card-header p-1 border-bottom-0 bg-gradient-dark">
+            <div class="card-header p-0 bg-gradient-dark">
                 <div class="row align-items-center">
                     <!-- Menambahkan align-items-center agar elemen berada di tengah secara vertikal -->
                     <div class="col-10">
@@ -20,22 +17,21 @@
                                 <h3 class="card-title font-weight-bold">&emsp;LIST KOMPUTER&emsp;</h3>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active border-button" id="button-tab-data-listkomputer" data-toggle="pill" href="#tab-old-listkomputer" role="tab" aria-controls="tab-old-listkomputer" aria-selected="true">DATA KOMPUTER</a>
+                                <a class="nav-link active border-button" id="button-tab-data-listkomputer" data-toggle="pill" href="#tab-data-listkomputer" role="tab" aria-controls="tab-data-listkomputer" aria-selected="true" title="Data Komputer">DATA KOMPUTER</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link border-button" id="button-tab-history-listkomputer" data-toggle="pill" href="#tab-new-listkomputer" role="tab" aria-controls="tab-new-listkomputer" aria-selected="false">HISTORY KOMPUTER</a>
+                                <a class="nav-link border-button" id="button-tab-history-listkomputer" data-toggle="pill" href="#tab-history-listkomputer" role="tab" aria-controls="tab-history-listkomputer" aria-selected="false" title="History Komputer">HISTORY KOMPUTER</a>
                             </li>
                         </ul>
                     </div>
                     <div class="col-2 text-right">
                         <!-- text-right agar tombol Add terposisi di kanan -->
                         <a href="@Url.Action("Create", "ListKomputer")" class="btn btn-icon waves-light btn-tambah mr-3" id="add-button" data-placement="top" title="New">
-                            <i class="fas fa-plus"></i> ADD
+                            <i class="fas fa-plus"></i> NEW
                         </a>
                     </div>
                 </div>
             </div>
-
 
             @* Search Area *@
             @*<div style="background-color:#f5f5f5; padding-top:10px; font-size:10px">
@@ -49,29 +45,28 @@
 
                             <button type="button" id="btnSearch" class="btn btn-instagram btn-sm m-l-10"><i class="fas fa-search"></i></button>
                         </div>
-
                     </div>
                 </div>*@
 
             <!-- /.card-header -->
             <div class="card-body">
                 <div class="tab-content" id="tab-listkomputer-tabContent">
-                    <div class="tab-pane fade show active" id="tab-old-listkomputer" role="tabpanel" aria-labelledby="button-tab-data-listkomputer" style="width:100%">
-                        <table id="ListKomputersOldTable" class="table table-bordered display" style="width:100%">
+                    <div class="tab-pane fade show active" id="tab-data-listkomputer" role="tabpanel" aria-labelledby="button-tab-data-listkomputer" style="width:100%">
+                        <table id="ListKomputersTable" class="table table-bordered display" style="width:100%">
                             <thead>
                                 <tr>
                                     <th width="3%"></th>
-                                    <th width="3%"></th>
-                                    <th width="15%">
+                                    <th width="10%"></th>
+                                    <th width="10%">
                                         @Html.DisplayNameFor(model => model.Description)
                                     </th>
-                                    <th width="12%">
+                                    <th width="10%">
                                         @Html.DisplayNameFor(model => model.Computername)
                                     </th>
                                     <th width="10%">
                                         @Html.DisplayNameFor(model => model.Workgroup)
                                     </th>
-                                    <th width="20%">
+                                    <th width="17%">
                                         @Html.DisplayNameFor(model => model.Useraccount)
                                     </th>
                                     <th width="10%">
@@ -80,10 +75,10 @@
                                     <th width="10%">
                                         @Html.DisplayNameFor(model => model.NamaUser)
                                     </th>
-                                    <th width="8%">
+                                    <th width="10%">
                                         @Html.DisplayNameFor(model => model.TanggalUpdate)
                                     </th>
-                                    <th width="14%">
+                                    <th width="10%">
                                     </th>
                                 </tr>
                             </thead>
@@ -92,8 +87,8 @@
                         </table>
                     </div>
 
-                    <div class="tab-pane fade" id="tab-new-listkomputer" role="tabpanel" aria-labelledby="button-tab-history-listkomputer" style="width:100%">
-                        <table id="ListKomputersNewTable" class="table table-striped table-bordered table-display " style="width:100%">
+                    <div class="tab-pane fade" id="tab-history-listkomputer" role="tabpanel" aria-labelledby="button-tab-history-listkomputer" style="width:100%">
+                        <table id="ListKomputersHistoryTable" class="table table-striped table-bordered table-display " style="width:100%">
                             <thead>
                                 <tr>
                                     <th width="3%"></th>
@@ -138,6 +133,22 @@
     <!-- /.row -->
 </div>
 
+<div id="reportModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            @*<div class="modal-header">
+                    <h5 class="modal-title">Laporan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>*@
+            <div class="modal-body" id="reportContainer">
+                <!-- Partial view content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script>
 
@@ -165,7 +176,7 @@
   </table>`;
     }
     $(document).ready(function () {
-      var OldTable = $('#ListKomputersOldTable').DataTable({
+      var ListTable = $('#ListKomputersTable').DataTable({
         responsive: true,
         lengthChange: false,
         scrollY: '320px',
@@ -192,9 +203,11 @@
         "columns": [
           { data: null, className: 'details-control', orderable: false, defaultContent: '<button class="btn btn-xs btn-default"><i class="fas fa-plus-circle"></i></button>' },
           {
-            "data": "Id", "render": function (data) {
-              var Edit = '@Url.Action("Edit", "ListKomputer")/' + data;
-              return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-sm btn-edit" data-placement="top" title="Maintenance"> <i class="fas fa-user-edit"></i></a></center>'
+            "data": "Id_Komputer", "render": function (data) {
+                  var Edit = '@Url.Action("Maintenance", "ListKomputer")/' + data;
+                  return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-sm btn-edit" data-placement="top" title="Maintenance"> <i class="fas fa-user-edit"></i></a>&nbsp' +
+                         '<button class="btn btn-sm btn-info btn-report" data-id="' + data + '" title="View Report"><i class="fas fa-print"></i></center>'
+
             },
           },
           { "data": "Description", "autowidth": true },
@@ -205,7 +218,7 @@
           { "data": "NamaUser", "autowidth": true },
           { "data": "TanggalUpdate", "autowidth": true },
           {
-            "data": "Id", "render": function (data) {
+            "data": "Id_Komputer", "render": function (data) {
               var Edit = '@Url.Action("Edit", "ListKomputer")/' + data;
               var Details = '@Url.Action("Details", "ListKomputer")/' + data;
               return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-primary btn-sm" data-placement="top" title="Edit"> <i class="fas fa-edit"></i></a>&nbsp;' +
@@ -226,18 +239,37 @@
           "sInfoPostFix": "",
           "sSearch": "Cari:",
           "sUrl": "",
-          "oPaginate": {
-            "sFirst": "Pertama",
-            "sPrevious": "Sebelumnya",
-            "sNext": "Selanjutnya",
-            "sLast": "Terakhir"
-          }
+            "oPaginate": {
+                "sFirst": "|<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">|"
+            }
         }
         // Add event listener for opening and closing details
       });
-      $('#ListKomputersOldTable tbody').on('click', 'td.details-control', function () {
+      $('#ListKomputersTable').on('click','.btn-report',function(){
+    var Id_Komputer = $(this).data('id');
+    var modal = $('#reportModal');
+    var reportContainer = $('#reportContainer');
+
+    // Load the partial view dynamically
+    $.ajax({
+        url: '@Url.Action("LoadReport", "ListKomputer")',
+        type: 'GET',
+        data: { id: Id_Komputer },
+        success: function (response) {
+            reportContainer.html(response);
+            modal.modal('show');
+        },
+        error: function () {
+            alert('Failed to load the report.');
+        }
+    });
+});
+      $('#ListKomputersTable tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
-        var row = OldTable.row(tr);
+        var row = ListTable.row(tr);
 
         if (row.child.isShown()) {
           // If the row is already open, close it
@@ -252,7 +284,7 @@
         }
       });
 
-      var NewTable = $('#ListKomputersNewTable').DataTable({
+      var HistoryTable = $('#ListKomputersHistoryTable').DataTable({
         responsive: true,
         lengthChange: false,
         scrollY: '320px',
@@ -278,7 +310,7 @@
         "columns": [
           { data: null, className: 'details-control', orderable: false, defaultContent: '<button class="btn btn-xs btn-default"><i class="fas fa-plus-circle"></i></button>' },
           {
-            "data": "Id", "render": function (data) {
+            "data": "Id_Komputer", "render": function (data) {
               var Edit = '@Url.Action("Edit", "ListKomputer")/' + data;
               return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-sm btn-edit" data-placement="top" title="Maintenance"> <i class="fas fa-user-edit"></i></a></center>'
             },
@@ -291,7 +323,7 @@
           { "data": "NamaUser", "autowidth": true },
           { "data": "TanggalUpdate", "autowidth": true },
           {
-            "data": "Id", "render": function (data) {
+            "data": "Id_Komputer", "render": function (data) {
               var Edit = '@Url.Action("Edit", "ListKomputer")/' + data;
               var Details = '@Url.Action("Details", "ListKomputer")/' + data;
               return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-primary btn-sm" data-placement="top" title="Edit"> <i class="fas fa-edit"></i></a>&nbsp;' +
@@ -312,18 +344,18 @@
           "sInfoPostFix": "",
           "sSearch": "Cari:",
           "sUrl": "",
-          "oPaginate": {
-            "sFirst": "Pertama",
-            "sPrevious": "Sebelumnya",
-            "sNext": "Selanjutnya",
-            "sLast": "Terakhir"
-          }
+            "oPaginate": {
+                "sFirst": "|<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">|"
+            }
         }
         // Add event listener for opening and closing details
       });
-      $('#ListKomputersNewTable tbody').on('click', 'td.details-control', function () {
+      $('#ListKomputersHistoryTable tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
-        var row = NewTable.row(tr);
+        var row = HistoryTable.row(tr);
 
         if (row.child.isShown()) {
           // If the row is already open, close it
@@ -338,8 +370,8 @@
         }
       });
         $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
-            OldTable.columns.adjust().draw();
-            NewTable.columns.adjust().draw();
+            ListTable.columns.adjust().draw();
+            HistoryTable.columns.adjust().draw();
         });
     });
 
@@ -352,8 +384,6 @@
     $(document).on('xhr.dt', function () {
       $('#loadingSpinner').hide();  // Sembunyikan spinner setelah data selesai dimuat
     });
-
-
 
         $(document).ready(function () {
             // Saat tab "DATA KOMPUTER" diklik

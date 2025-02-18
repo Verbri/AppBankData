@@ -1,0 +1,91 @@
+@model AppBankData.Models.User
+
+<div class="row">
+    <div class="col-12">
+        <div class="card m-0">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-9">
+                        <h4><b>TAMBAH DATA USER</b></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body ">
+                <form id="CreateUserForm" action="@Url.Action("Create", "User")" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.NIK, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.NIK, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.NIK, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Nama, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.Nama, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Nama, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Bagian, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(model => model.Bagian, new SelectList(ViewBag.BagianList, "Value", "Text"), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Bagian, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-8 custom-control custom-radio">
+                                <label>
+                                    @Html.RadioButtonFor(model => model.Status, value: 1) Aktif
+                                </label> &emsp;&emsp;&emsp;
+                                <label>
+                                    @Html.RadioButtonFor(model => model.Status, value: 0) Tidak Aktif
+                                </label>
+                                <br />
+                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row row mb-0">
+                            <div class="col-8 offset-4">
+                                <button type="button" class="btn btn-primary waves-effect waves-light" onclick="btnSave(event, this, TableUser)">
+                                    SIMPAN
+                                </button>
+                                <button type="button" class="btn btn-default waves-effect waves-light" data-dismiss="modal">KEMBALI</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</div>

@@ -1,4 +1,4 @@
-﻿
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,26 +21,24 @@
 
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="card card-danger">
-            <div class="card-header justify-content-center font-weight-bold">
+            <div class="card-header font-weight-bold">
                 <h3 class="card-title">TABEL APLIKASI</h3>
 
                 <div class="card-tools">
-                    <button type="button"
-                            class="btn btn-tool"
-                            data-card-widget="collapse">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
                     </button>
                 </div>
             </div>
             <div class="card-body">
-                <table id="TableAplikasi" class="table table-bordered">
+                <table id="TableAplikasi" class="table">
                     <thead>
                         <tr>
                             <th width="35%">Nama Aplikasi</th>
                             <th width="47%">Deskripsi</th>
-                            <th width="8%">IsActive</th>
+                            <th width="8%">Active</th>
                             <th width="10%">Action</th>
                         </tr>
                     </thead>
@@ -48,12 +46,10 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
-        <!-- /.card-body -->
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="card card-success">
             <div class="card-header">
                 <h3 class="card-title">TABEL PROGRAM</h3>
@@ -86,161 +82,147 @@
         <!-- /.card -->
     </div>
     <!-- /.col -->
+    <div class="col-md-4">
+        <div class="card card-blue">
+            <div class="card-header font-weight-bold">
+                <h3 class="card-title">TABEL WORKGROUP</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="TableWorkgroup" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="70%">Nama Workgroup</th>
+                            <th width="30%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 @section scripts{
- <script>
-    $(document).ready(function() {
-        var TableAplikasi = $('#TableAplikasi').DataTable({
-            responsive: true,
-            lengthChange: false,
-            "ordering": false,
-            scrollY: '340px',
-
-            //processing: true,
-            //serverSide: true,
-
-            //scrollX: true,  // Mengaktifkan scroll horizontal//scrollX: true,  // Mengaktifkan scroll horizontal
-
-            ajax: {
-                url: "@Url.Action("LoadDataApps", "InstalledAppsProgram")", // Ensure correct URL
-                type: "POST",
-                dataType: "json",
-                dataSrc: "data", // Adjust according to your JSON structure
-            },
-
-            //"initComplete": function(settings, json) {
-            //    $('#loadingSpinner').hide(); // Sembunyikan spinner saat tabel selesai dimuat
-            //},
-            columnDefs: [
-                //{ width: '5px', targets: 0 },  // Narrow the first column (for + buttons)
-                //{ width: '150px', targets: [1, 2, 3, 4, 5] }
-            ],
-            "columns": [
-
-                {
-                    "data": "Nama_Aplikasi",
-                    "autowidth": true
-                },
-                {
-                    "data": "Deskripsi",
-                    "autowidth": true
-                },
-                {
-                    "data": "IsActive", // Kolom yang berisi nilai true/false
-                    "render": function(data, type, row) {
-                        return `<center><input type="checkbox" ${data ? 'checked' : ''} disabled></center>`;
+    <script>
+        $(document).ready(function () {
+            function initializeDataTable(tableId, url, columns,dom,initComplete) {
+                return $(tableId).DataTable({
+                    responsive: true,
+                    ordering: false,
+                    scrollY: '150px',
+                    pageLength: 5,
+                    lengthChange: false,
+                    paging: true,
+                    processing: true,
+                    ajax: {
+                        url: url,
+                        type: "POST",
+                        dataType: "json",
+                        dataSrc: "data",
+                        beforeSend: function () {
+                            $('#loadingSpinner').fadeIn(); // Tampilkan spinner sebelum AJAX
+                        },
+                        complete: function () {
+                            $('#loadingSpinner').fadeOut(); // Sembunyikan spinner setelah selesai
+                        }
                     },
-                },
-
-                {
-                    "data": "Id_Aplikasi",
-                    "render": function(data) {
-                        var Edit = '@Url.Action("EditApps", "InstalledAppsProgram")/' + data;
-                        return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-primary btn-sm" data-placement="top" title="Edit"> <i class="fas fa-edit"></i></a>&nbsp;'
-                    },
-                },
-            ],
-            "dom": '<"topApps d-flex justify-content-between"f><"clear">rt<"bottom"lp>', // "f" untuk filter (Cari)
-            "initComplete": function() {
-                // Menambahkan button di container atas di sebelah kanan
-                var AddApps = '@Url.Action("CreateApps", "InstalledAppsProgram")';
-                $(".topApps").append('<a href=\"' + AddApps + '\" class="btn waves-light btn-tambah"><i class="fas fa-plus"></i></a>');
-            },
-            "language": {
-                "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
-                "sProcessing": "Sedang memproses...",
-                "sLengthMenu": "Tampilkan _MENU_ data",
-                "sZeroRecords": "Tidak ditemukan data yang sesuai",
-                "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
-                "sInfoFiltered": "(disaring dari _MAX_ data keseluruhan)",
-                "sInfoPostFix": "",
-                "sSearch": "Cari:",
-                "sUrl": "",
-                "oPaginate": {
-                    "sFirst": "|<",
-                    "sPrevious": "<",
-                    "sNext": ">",
-                    "sLast": ">|"
-                }
+                    columns: columns,
+                    dom: dom,
+                    initComplete: initComplete, // Memanggil fungsi initComplete yang diberikan sebagai parameter
+                    language: {
+                        sEmptyTable: "Tidak ada data yang tersedia pada tabel ini",
+                        sProcessing: "Sedang memproses...",
+                        sZeroRecords: "Tidak ditemukan data yang sesuai",
+                        sInfo: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                        sInfoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                        sInfoFiltered: "(disaring dari _MAX_ data keseluruhan)",
+                        sSearch: "Cari:",
+                        oPaginate: {
+                            sFirst: "|<",
+                            sPrevious: "<",
+                            sNext: ">",
+                            sLast: ">|"
+                        }
+                    }
+                });
             }
-        });
-
-        var TableProgram = $('#TableProgram').DataTable({
-            responsive: true,
-            lengthChange: false,
-            "ordering": false,
-            scrollY: '340px',
-
-            //processing: true,
-            //serverSide: true,
-
-            //scrollX: true,  // Mengaktifkan scroll horizontal//scrollX: true,  // Mengaktifkan scroll horizontal
-
-            ajax: {
-                url: "@Url.Action("LoadDataProgram", "InstalledAppsProgram")", // Ensure correct URL
-                type: "POST",
-                dataType: "json",
-                dataSrc: "data", // Adjust according to your JSON structure
-            },
-
-            //"initComplete": function(settings, json) {
-            //    $('#loadingSpinner').hide(); // Sembunyikan spinner saat tabel selesai dimuat
-            //},
-            "columns": [
-
-                {
-                    "data": "Nama_Program",
-                    "autowidth": true
-                },
-                {
-                    "data": "Deskripsi",
-                    "autowidth": true
-                },
-                {
-                    "data": "IsActive", // Kolom yang berisi nilai true/false
-                    "render": function(data, type, row) {
-                        return `<center><input type="checkbox" ${data ? 'checked' : ''} disabled></center>`;
-                    },
-                },
-
-                {
-                    "data": "Id_Program",
-                    "render": function(data) {
-                        var Edit = '@Url.Action("EditApps", "InstalledAppsProgram")/' + data;
-                        return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-primary btn-sm" data-placement="top" title="Edit"> <i class="fas fa-edit"></i></a>&nbsp;'
-                    },
-                },
-
-            ],
-            "dom": '<"topProgram d-flex justify-content-between"f><"clear">rt<"bottom"lp>', // "f" untuk filter (Cari)
-            "initComplete": function() {
-                // Menambahkan button di container atas di sebelah kanan
-                var Add = '@Url.Action("CreateProgram", "InstalledAppsProgram")';
-                $(".topProgram").append('<a href=\"' + Add + '\" class="btn waves-light btn-tambah"><i class="fas fa-plus"></i></a>');
-            },
-            "language": {
-                "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
-                "sProcessing": "Sedang memproses...",
-                "sLengthMenu": "Tampilkan _MENU_ data",
-                "sZeroRecords": "Tidak ditemukan data yang sesuai",
-                "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
-                "sInfoFiltered": "(disaring dari _MAX_ data keseluruhan)",
-                "sInfoPostFix": "",
-                "sSearch": "Cari:",
-                "sUrl": "",
-                "oPaginate": {
-                    "sFirst": "|<",
-                    "sPrevious": "<",
-                    "sNext": ">",
-                    "sLast": ">|"
-                }
+             // Inisialisasi DataTables
+    var TableAplikasi = initializeDataTable('#TableAplikasi', '@Url.Action("LoadDataApps", "InstalledAppsProgram")', [
+        { data: "Nama_Aplikasi", autowidth: true },
+        { data: "Deskripsi", autowidth: true },
+        {
+            data: "IsActive",
+            render: function (data) {
+                return `<center><input type="checkbox" ${data ? 'checked' : ''} disabled></center>`;
             }
+        },
+        {
+            data: "Id_Aplikasi",
+            render: function (data) {
+                var Edit = '@Url.Action("EditApps", "InstalledAppsProgram")/' + data;
+                return `<center><a href="${Edit}" class="btn btn-icon waves-light btn-primary btn-xs" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a></center>`;
+            }
+        }
+    ],
+     '<"topApps d-flex justify-content-between"f><"clear">rt<"bottom"lp>',
+        function () { // Fungsi initComplete sebagai parameter
+            // Menambahkan button di container atas di sebelah kanan
+            var AddApps = '@Url.Action("CreateApps", "InstalledAppsProgram")';
+            $(".topApps").append('<a href="' + AddApps + '" class="btn waves-light btn-tambah"><i class="fas fa-plus"></i></a>');
+        }
+    );
+
+    var TableProgram = initializeDataTable('#TableProgram', '@Url.Action("LoadDataProgram", "InstalledAppsProgram")', [
+        { data: "Nama_Program", autowidth: true },
+        { data: "Deskripsi", autowidth: true },
+        {
+            data: "IsActive",
+            render: function (data) {
+                return `<center><input type="checkbox" ${data ? 'checked' : ''} disabled></center>`;
+            }
+        },
+        {
+            data: "Id_Program",
+            render: function (data) {
+                var Edit = '@Url.Action("EditProgram", "InstalledAppsProgram")/' + data;
+                return `<center><a href="${Edit}" class="btn btn-icon waves-light btn-primary btn-xs" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a></center>`;
+            }
+        }
+    ],
+     '<"topProgram d-flex justify-content-between"f><"clear">rt<"bottom"lp>',
+        function () { // Fungsi initComplete sebagai parameter
+            // Menambahkan button di container atas di sebelah kanan
+            var AddProgram = '@Url.Action("CreateProgram", "InstalledAppsProgram")';
+            $(".topProgram").append('<a href="' + AddProgram + '" class="btn waves-light btn-tambah"><i class="fas fa-plus"></i></a>');
+        }
+    );
+
+    var TableWorkgroup = initializeDataTable('#TableWorkgroup', '@Url.Action("LoadDataWorkgroup", "Workgroup")', [
+        { data: "Nama_Workgroup", autowidth: true },
+        {
+            data: "Id_Workgroup",
+            render: function (data) {
+                var Edit = '@Url.Action("Edit", "Workgroup")/' + data;
+                return `<center><a href="${Edit}" class="btn btn-icon waves-light btn-primary btn-xs" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a></center>`;
+            }
+        }
+    ],
+     '<"topWorkgroup d-flex justify-content-between"f><"clear">rt<"bottom"lp>',
+        function () { // Fungsi initComplete sebagai parameter
+            // Menambahkan button di container atas di sebelah kanan
+            var AddWorkgroup = '@Url.Action("Create", "Workgroup")';
+            $(".topWorkgroup").append('<a href="' + AddWorkgroup + '" class="btn waves-light btn-tambah"><i class="fas fa-plus"></i></a>');
+        }
+    );
         });
-    });
-</script>   
+    </script>
 
 }
