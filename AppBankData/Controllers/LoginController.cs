@@ -1,10 +1,12 @@
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using AppBankData.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace AppBankData.Controllers
 {
@@ -55,16 +57,35 @@ namespace AppBankData.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult  Index(LoginView loginView, string returnUrl)
+        public JsonResult Index(LoginView loginView, string returnUrl)
         {
-            if (ModelState.IsValid)
+            var response = new { status = "", message = "", errors = new string[] { } };
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    response = new
+                    {
+                        status = "validation_error",
+                        message = "Validasi gagal",
+                        errors = ModelState.Values.SelectMany(v => v.Errors)
+                                                  .Select(e => e.ErrorMessage)
+                                                  .ToArray()
+                    };
+                    return Json(response);
+                }
+
+
                 var user = _User.AuthenticateUser(loginView.NIK, loginView.Password);
-                
-                
+
+
                 if (user != null)
                 {
-                    FormsAuthentication.SetAuthCookie(user.NIK, true);
+                    FormsAuthentication.SetAuthCookie(user.NIK, false);
+                    //var ticket = new FormsAuthenticationTicket(1, user.NIK, DateTime.Now, DateTime.Now.AddMinutes(20), false, "UserData");
+                    //string encTicket = FormsAuthentication.Encrypt(ticket);
+                    //HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
+                    //Response.Cookies.Add(faCookie);
                     if (user.Status == "1")
                     {
                         Session["NIK"] = user.NIK;
@@ -72,34 +93,33 @@ namespace AppBankData.Controllers
                         Session["Bagian"] = user.Bagian;
                         Session["Role"] = user.Role;
 
-                        if (string.IsNullOrEmpty(returnUrl))
-                        {
+                        string redirectUrl = string.IsNullOrEmpty(returnUrl)
+                    ? Url.Action("Index", "Home")
+                    : Url.IsLocalUrl(returnUrl) ? returnUrl : Url.Action("Index", "Home");
 
-                            /*if (oUser.Password== passwordstandar)
-                            {
-                                return RedirectToAction("EditPassword", "User", new { id = Session["id"] });
-
-                            }
-                            else
-                            {
-                                return RedirectToAction("Index", "Home");
-                            }*/
-                            return RedirectToAction("Index", "Home");
-                        }
-                        return RedirectToLocal(returnUrl);
+                        return Json(new { success = true, redirectUrl });
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Akun Anda tidak aktif.");
-                        Console.WriteLine("User Status (from LoginController): " + user.Status);
+                        return Json(new { success = false, message = "Akun Anda tidak aktif." });
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Login gagal. Periksa username dan password.");
+                    return Json(new { status = "error", message = "Username atau password salah." });
                 }
             }
-            return View(loginView);
+            catch (Exception ex)
+            {
+                response = new
+                {
+                    status = "error",
+                    message = "Terjadi kesalahan saat menyimpan data",
+                    errors = new string[] { ex.Message }
+                };
+            }
+
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         private ActionResult RedirectToLocal(string returnUrl)

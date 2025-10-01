@@ -1,0 +1,93 @@
+@model IEnumerable<AppBankData.Models.Client>
+@{
+    ViewBag.Title = "Monitoring Data Client";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // sesuaikan kalau layout beda
+}
+
+<h2>Monitoring Data Client</h2>
+
+<!-- Notifikasi sukses / error -->
+@if (TempData["Msg"] != null)
+{
+    <div class="alert alert-success">@TempData["Msg"]</div>
+}
+@if (TempData["Err"] != null)
+{
+    <div class="alert alert-danger">@TempData["Err"]</div>
+}
+
+<!-- Form Rename Komputer -->
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>Perintah Rename Komputer</strong></div>
+    <div class="panel-body">
+        @using (Html.BeginForm("SendRename", "Client", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-inline">
+                <!-- Dropdown komputer -->
+                <div class="form-group">
+                    <label for="computerName">Computer</label>
+                    <select id="computerName" name="computerName" class="form-control" required>
+                        <option value="">-- pilih --</option>
+                        @foreach (var c in Model.Select(m => m.ComputerName).Distinct())
+                        {
+                            <option value="@c">@c</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Input nama baru -->
+                <div class="form-group" style="margin-left:10px">
+                    <label for="newName">New Name</label>
+                    <input type="text" id="newName" name="newName" class="form-control" required maxlength="50" />
+                </div>
+
+                <!-- Tombol kirim -->
+                <button type="submit" class="btn btn-primary" style="margin-left:10px">
+                    Kirim Perintah Rename
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+<hr />
+<!-- Tabel Monitoring Data Client -->
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+
+            <th>Computer Name</th>
+            <th>Description</th>
+            <th>Lokasi</th>
+            <th>IP Address</th>
+            <th>OS</th>
+            <th>CPU</th>
+            <th>RAM</th>
+            <th>Workgroup</th>
+            <th>Disks</th>
+            <th>Total Disk Size</th>
+            <th>Version Agent</th>
+            <th>Last Update</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ComputerName</td>
+                <td>@item.Description</td>
+                <td>@item.Lokasi</td>
+                <td>@item.IP</td>
+                <td>@item.OS</td>
+                <td>@item.CPU</td>
+                <td>@item.RAM</td>
+                <td>@item.Workgroup</td>
+                <td>@item.Disks</td>
+                <td>@item.TotalDiskSize</td>
+                <td>@item.VersionAgent</td>
+                <td>@item.LastUpdate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+            </tr>
+        }
+    </tbody>
+</table>

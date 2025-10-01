@@ -1,0 +1,46 @@
+@model List<AppBankData.Models.Client>
+
+<h2>Data Komputer item</h2>
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Computer Name</th>
+            <th>Workgroup</th>
+            <th>IP</th>
+            <th>OS</th>
+            <th>RAM</th>
+            <th>HardDisk</th>
+            <th>TotalDiskSize</th>
+            <th>Processor</th>
+            <th>MotherboardManufacturer</th>
+            <th>MotherboardProduct</th>
+            <th>WindowsProductKey</th>
+            <th>Last Update</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ComputerName</td>
+                <td>@item.Workgroup</td>
+                <td>@item.IP</td>
+                <td>@item.OS</td>
+                <td>@item.RAM</td>
+                <td>@item.Disks</td>
+                <td>@item.TotalDiskSize</td>
+                <td>@item.CPU</td>
+                <td>@item.MotherboardManufacturer</td>
+                <td>@item.MotherboardProduct</td>
+                <td>@item.WindowsProductKey</td>
+                <td>@item.LastUpdate.ToString("dd-MM-yyyy HH:mm:ss")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    setInterval(function () {
+        location.reload();
+    }, 5000);
+</script>

@@ -134,7 +134,8 @@
             { data: "Bagian", autowidth: true },
             {
                 data: "Status", render: function (data) {
-                    return `<center><input type="checkbox" ${data ? 'checked' : ''} disabled></center>`;
+                    console.log('Data value:', data);
+                    return `<center><input type="checkbox" ${data === 'True' ? 'checked' : ''} disabled></center>`;
                 }
             },
             {
@@ -169,7 +170,9 @@
             }
         );
     });
-    $(document).on('click', '.User', function () {
+        $(document).on('click', '.User', function () {
+            $("#AddModal .modal-body").html(""); // Kosongkan modal lebih dulu
+            $("#AddModal").off('shown.bs.modal'); // Hapus event sebelumnya
         $.get('@Url.Action("Create", "User")', function (data) {
             $(".modal-body").html(data);
             $("#AddModal").modal('show');
@@ -178,7 +181,9 @@
             });
         });
     });
-    $(document).on('click', '.Role', function () {
+        $(document).on('click', '.Role', function () {
+            $("#AddModal .modal-body").html(""); // Kosongkan modal lebih dulu
+            $("#AddModal").off('shown.bs.modal'); // Hapus event sebelumnya
         $.get('@Url.Action("Create", "Role")', function (data) {
             $(".modal-body").html(data);
             $("#AddModal").modal('show');
@@ -212,7 +217,7 @@
                                 $("#AddModal").modal("hide"); // Tutup modal setelah sukses
                                 form[0].reset(); // Reset form
 
-                                tableInstance.ajax.reload(null, false); // Perbaikan reload tabel tanpa refresh halaman
+                                tableInstance.ajax.reload(null, false); // reload tabel tanpa refresh halaman
                             });
                         } else if (response.status === "validation_error") {
                             Swal.fire({
@@ -240,4 +245,4 @@
             }
         }
     </script>
-}
+    }

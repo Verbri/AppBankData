@@ -19,7 +19,7 @@ namespace AppBankData.Views.Reports.Controllers
         {
             //This is the folder that contains the report definitions
             //In this case this is the Reports folder
-            var appPath = HttpContext.Current.Server.MapPath("~/");
+            //var appPath = HttpContext.Current.Server.MapPath("~/");
             //var reportsPath = Path.Combine(appPath, "Reports");
             var reportsPath = ConfigurationHelper.GetConfigurationValue("ReportFolder");
 

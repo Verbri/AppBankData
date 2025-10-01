@@ -2,17 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using AppBankData.Models;
 
 namespace AppBankData.Controllers
 {
     [Authorize]
+
     public class UserController : Controller
     {
         
         private readonly UserContext _objListUser = new UserContext();
-        
+        private readonly RoleContext _objListRole = new RoleContext();
+
         // GET: User
         public ActionResult Index()
         {
@@ -38,12 +41,13 @@ namespace AppBankData.Controllers
     //    new SelectListItem { Value = "3", Text = "Bagian 3" }
     };
             ViewBag.BagianList = bagianList;
+            ViewBag.RoleList = _objListRole.GetAllRoles(); // Ambil data dari model
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(User user)
+        public JsonResult Create(User user)
         {
             var response = new { status = "", message = "", errors = new string[] { } };
             try
@@ -68,7 +72,7 @@ namespace AppBankData.Controllers
                 response = new
                 {
                     status = "success",
-                    message = "Data Role sudah tersimpan",
+                    message = "Data User berhasil tersimpan",
                     errors = new string[] { } // Tetap tambahkan errors agar tipe selalu konsisten
                 };
             }
@@ -83,7 +87,7 @@ namespace AppBankData.Controllers
                 };
             }
 
-            return Json(response, JsonRequestBehavior.AllowGet);
+            return Json(response);
         }
 
     }

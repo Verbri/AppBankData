@@ -1,0 +1,140 @@
+@model IEnumerable<AppBankData.Models.Parameter>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row ">
+    <div class="col-md-12">
+        <div class="card card-lightblue">
+            <div class="card-header font-weight-bold">
+                <h3 class="card-title">TABEL PARAMETER</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body ">
+                <table id="TableParameter" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="20%">ParameterName</th>
+                            <th width="15%">ParameterValue</th>
+                            <th width="20%">Description</th>
+                            <th width="10%">CreateDateTime</th>
+                            <th width="10%">LastUpdateDateTime</th>
+                            <th width="5%">CreateByUser</th>
+                            <th width="5%">LastUpdateByUser</th>
+                            <th width="5%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
+<div id="AddModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <!-- Partial view content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var TableParameter;
+        $(document).ready(function () {
+            function initializeDataTable(tableId, url, columns, dom, initComplete) {
+                return $(tableId).DataTable({
+                    responsive: true,
+                    ordering: false,
+                    scrollY: '340px',
+                    //pageLength: 5,
+                    lengthChange: false,
+                    paging: true,
+                    //processing: true,
+                    ajax: {
+                        url: url,
+                        type: "POST",
+                        dataType: "json",
+                        dataSrc: "data",
+                        beforeSend: function () {
+                            $('#loadingSpinner').fadeIn(); // Tampilkan spinner sebelum AJAX
+                        },
+                        complete: function () {
+                            $('#loadingSpinner').fadeOut(); // Sembunyikan spinner setelah selesai
+                        }
+                    },
+                    columns: columns,
+                    dom: dom,
+                    initComplete: initComplete, // Memanggil fungsi initComplete yang diberikan sebagai parameter
+                    language: {
+                        sEmptyTable: "Tidak ada data yang tersedia pada tabel ini",
+                        sProcessing: "Sedang memproses...",
+                        sZeroRecords: "Tidak ditemukan data yang sesuai",
+                        sInfo: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                        sInfoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                        sInfoFiltered: "(disaring dari _MAX_ data keseluruhan)",
+                        sSearch: "Cari:",
+                        oPaginate: {
+                            sFirst: "|<",
+                            sPrevious: "<",
+                            sNext: ">",
+                            sLast: ">|"
+
+                        }
+                    }
+                })
+            }
+            TableParameter = initializeDataTable('#TableParameter', '@Url.Action("LoadData", "Parameter")', [
+                { data: "ParameterName", autowidth: true },
+                { data: "ParameterValue", autowidth: true },
+                { data: "Description", autowidth: true },
+                { data: "CreateDateTime", autowidth: true },
+                { data: "LastUpdateDateTime", autowidth: true },
+                { data: "CreateByUserID", autowidth: true },
+                { data: "LastUpdateByUserID", autowidth: true },
+                {
+                    data: "ParameterID",
+                    render: function (data) {
+                        var Edit = '@Url.Action("Edit", "Parameter")/' + data;
+                        return `<center><a href="${Edit}" class="btn btn-icon waves-light btn-primary btn-xs" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a></center>`;
+                    }
+                }
+            ],
+                '<"topParameter d-flex justify-content-between"f><"clear">rt<"bottom"lp>',
+                function () { // Fungsi initComplete sebagai parameter
+                    // Menambahkan button di container atas di sebelah kanan
+                    $(".topParameter").append('<a class="btn waves-light btn-tambah Parameter" data-toggle="modal" data-target="#AddModal"><i class="fas fa-plus"></i></a>');
+                }
+            );
+            $(document).on('click', '.Parameter', function () {
+                $("#AddModal .modal-body").html(""); // Kosongkan modal lebih dulu
+                $("#AddModal").off('shown.bs.modal'); // Hapus event sebelumnya
+                $.get('@Url.Action("Create", "Parameter")', function (data) {
+                    $(".modal-body").html(data);
+                    $("#AddModal").modal('show');
+                    $('#AddModal').on('shown.bs.modal', function () {
+                        $('#ParameterName').focus();  // Fokuskan input dengan id=ParameterName" di dalam modal
+                    });
+                });
+            });
+        });
+    </script>
+    }

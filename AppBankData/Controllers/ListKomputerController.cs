@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
@@ -25,6 +26,7 @@ namespace AppBankData.Controllers
             ViewBag.Database = builder.InitialCatalog;
 
             ViewBag.Menu = "ListKomputer";
+            
             return View();
         }
 
@@ -166,6 +168,27 @@ namespace AppBankData.Controllers
             // Teruskan sumber laporan ke partial view
             ViewBag.ReportSource = reportSource;
             return PartialView("_ReportViewer");
+        }
+
+        [HttpPost]
+        public JsonResult PingClient(string ip)
+        {
+            bool result = false;
+
+            try
+            {
+                using (var ping = new System.Net.NetworkInformation.Ping())
+                {
+                    var reply = ping.Send(ip, 2000); // timeout 2 detik
+                    result = reply.Status == System.Net.NetworkInformation.IPStatus.Success;
+                }
+            }
+            catch
+            {
+                result = false;
+            }
+
+            return Json(new { success = result });
         }
     }
 }

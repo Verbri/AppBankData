@@ -6,12 +6,12 @@
 }
 
 @{
-    var selectedStandard = ViewBag.selectedProgramstandar as List<string>;
-    var selectedImmanuel = ViewBag.selectedProgramImmanuel as List<string>;
+//var selectedStandard = ViewBag.selectedProgramstandar as List<string>;
+//var selectedImmanuel = ViewBag.selectedProgramImmanuel as List<string>;
 }
 
-<p>Selected Program Standar: @string.Join(", ", selectedStandard ?? new List<string>())</p>
-<p>Selected Program Immanuel: @string.Join(", ", selectedImmanuel ?? new List<string>())</p>
+@*<p>Selected Program Standar: @string.Join(", ", selectedStandard ?? new List<string>())</p>*@
+@*<p>Selected Program Immanuel: @string.Join(", ", selectedImmanuel ?? new List<string>())</p>*@
 <div class="row">
     <div class="col-12">
         <div class="card m-0">
@@ -29,6 +29,7 @@
                 @using (Html.BeginForm("Edit", "ListKomputer", FormMethod.Post, new { enctype = "multipart/form-data", id = "Edit" }))
                 {
                     @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.Id_Komputer)
 
                     <div class="form-horizontal">
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })

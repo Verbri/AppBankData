@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using IdentityManagement.Utilities;
 
 namespace AppBankData.Models
 {
     public class LoginView
     {
         [Display(Name = "NIK")]
+        [Required(ErrorMessage = "{0} harus diisi.")]
         public string NIK { get; set; }
 
         //[Required(ErrorMessage = "Masukkan password anda ")]
         [Display(Name = "Password")]
+        [Required(ErrorMessage = "{0} harus diisi.")]
         public string Password { get; set; }
 
     }

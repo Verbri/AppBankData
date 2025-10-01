@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
 
 namespace AppBankData.Models
 {
@@ -161,11 +163,11 @@ namespace AppBankData.Models
         public string ProgramstandarDisplay { set; get; }
         public string ProgramimmanuelDisplay { set; get; }
         public string NamaWorkgroup { set; get; }
+        public string Ping { set; get; }
     }
     public class ListKomputerContext
     {
         private readonly DBContext dbCont = new DBContext();
-
 
         private string GenerateNewIdKomputer()
         {

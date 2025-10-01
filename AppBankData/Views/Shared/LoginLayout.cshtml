@@ -13,23 +13,151 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/Content/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/Content/fontawesome-free/css/all.min.css">
     <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="~/Content/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- SweetAlert2 -->
+    <link href="~/Content/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css" rel="stylesheet" />
+    <!-- Toastr -->
+    <link href="~/Content/toastr/toastr.min.css" rel="stylesheet" />
     <!-- Theme style -->
     <link rel="stylesheet" href="~/Content/dist/css/adminlte.min.css">
+
+    <style>
+        /* Background Gradient */
+        body {
+            background: url('../../img/BackgroundLeimena.jpg')no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center; /* Pusatkan horizontal */
+            align-items: center; /* Pusatkan vertikal */
+            flex-direction: column;
+            min-height: 90vh;
+        }
+
+        /* Container Form */
+        .login-container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 50px 15px 10px 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 5, 255);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            width: 300px;
+            position: relative;
+        }
+
+        /* Avatar di atas form */
+        .avatar {
+            width: 80px;
+            height: 80px;
+            /*            background: rgba(0, 0, 50, 0.8);*/
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+            .avatar img {
+                width: 100%;
+                color: white;
+            }
+
+        /* Input Fields */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            background: rgba(0, 0, 50, 0.6);
+            border: none;
+            color: white;
+            height: 50px;
+            text-align: center;
+            font-size: 18px;
+            padding-right: 20px;
+        }
+
+            .form-control:focus {
+                background: rgba(0, 0, 50, 0.5); /* Tetap transparan dengan sedikit perubahan */
+            /*border: 1px solid rgba(255, 255, 255, 0.5);*/ /* Perjelas border saat fokus */
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2); /* Efek glow ringan */
+            color: white;
+            text-align: center;
+        }
+
+            .form-control::placeholder {
+                color: rgba(255, 255, 255, 0.5);
+                text-align: center;
+            }
+
+        .input-group-text {
+            background: rgba(0, 0, 50, 0.6);
+            border: none;
+            color: white;
+        }
+
+        /* Tombol Login Floating dengan Efek Lengkungan */
+        .login-button {
+            position: absolute;
+            /*            bottom: -55px;*/
+            left: 47%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            /*            padding: 10px 20px;*/
+            padding-top: 35px;
+            border-radius: 100%;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            width: 70%;
+            /*            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);*/
+            transition: all 0.3s ease-in-out;
+            clip-path: inset(47% 0 0 0); /* Potong setengah bagian bawah */
+        }
+
+            .login-button:hover {
+                background: rgb(255, 115, 0, 0.5);
+                /*                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);*/
+                /*                transform: translate(-50%, -2px);*/
+            }
+    </style>
 </head>
-<body class="hold-transition login-page">
-    <div class="login-box">
+<body class="hold-transition">
+    <div class="login-container">
+        <div class="avatar">
+            <img src="~/img/Imgrs.png" />
+        </div>
         <!-- /.login-logo -->
         @RenderBody()
     </div>
     <!-- /.login-box -->
     <!-- jQuery -->
-    <script src="~/Content/plugins/jquery/jquery.min.js"></script>
+    <script src="~/Content/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="~/Content/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="~/Content/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Toastr -->
+    <script src="~/Content/toastr/toastr.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/Content/dist/js/adminlte.min.js"></script>
+
+
+    @RenderSection("scripts", required: false)
+    <script>var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });</script>
 </body>
 </html>

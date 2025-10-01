@@ -52,11 +52,11 @@
             <div class="card-body">
                 <div class="tab-content" id="tab-listkomputer-tabContent">
                     <div class="tab-pane fade show active" id="tab-data-listkomputer" role="tabpanel" aria-labelledby="button-tab-data-listkomputer" style="width:100%">
-                        <table id="ListKomputersTable" class="table table-bordered display" style="width:100%">
+                        <table id="ListKomputersTable" class="table table-bordered display" style="width:100%;font-size:10px">
                             <thead>
                                 <tr>
                                     <th width="3%"></th>
-                                    <th width="10%"></th>
+                                    <th width="8%"></th>
                                     <th width="10%">
                                         @Html.DisplayNameFor(model => model.Description)
                                     </th>
@@ -78,7 +78,7 @@
                                     <th width="10%">
                                         @Html.DisplayNameFor(model => model.TanggalUpdate)
                                     </th>
-                                    <th width="10%">
+                                    <th width="12%">Action
                                     </th>
                                 </tr>
                             </thead>
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="tab-pane fade" id="tab-history-listkomputer" role="tabpanel" aria-labelledby="button-tab-history-listkomputer" style="width:100%">
-                        <table id="ListKomputersHistoryTable" class="table table-striped table-bordered table-display " style="width:100%">
+                        <table id="ListKomputersHistoryTable" class="table table-bordered table-display " style="width:100%;font-size:10px">
                             <thead>
                                 <tr>
                                     <th width="3%"></th>
@@ -136,6 +136,7 @@
 <div id="reportModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
+            <div id="reportViewer"></div>
             @*<div class="modal-header">
                     <h5 class="modal-title">Laporan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -150,240 +151,279 @@
 </div>
 
 @section scripts{
+    
     <script>
+        function PingIp(ip, rowId) {
+            $("#status-" + rowId).html('<i class="fas fa-spinner fa-spin" style="color:blue;"></i>');
 
-    function format(d) {
-      // `d` is the original data object for the row
-      return `
-    <table class="table child-table display table-bordered bg-gradient-white">
-  <tr>
-    <th width="15%"><center>Motherboard</center></th>
-    <th width="10%"><center>Processor</center></th>
-    <th width="15%"><center>Operating System</center></th>
-    <th width="10%"><center>Harddisk</center></th>
-    <th width="15%"><center>RAM</center></th>
-    <th width="15%"><center>Lokasi</center></th>
-    <th width="20%"><center>Keterangan</center></th>
-  </tr>
-    <td> ${d.Motherboard}</td>
-    <td> ${d.Processor}</td>
-    <td>${d.Os}</td>
-    <td>${d.Hardisk}</td>
-    <td> ${d.Ram}</td>
-    <td>${d.Lokasi}</td>
-    <td>${d.Keterangan1}</td>
-  </tr>
-  </table>`;
-    }
-    $(document).ready(function () {
-      var ListTable = $('#ListKomputersTable').DataTable({
-        responsive: true,
-        lengthChange: false,
-        scrollY: '320px',
 
-        //processing: true,
-        //serverSide: true,
-
-        //scrollX: true,  // Mengaktifkan scroll horizontal//scrollX: true,  // Mengaktifkan scroll horizontal
-
-        ajax: {
-          url: "@Url.Action("LoadData", "ListKomputer")", // Ensure correct URL
-          type: "POST",
-          dataType: "json",
-          dataSrc: "data", // Adjust according to your JSON structure
-        },
-
-        "initComplete": function (settings, json) {
-          $('#loadingSpinner').hide();  // Sembunyikan spinner saat tabel selesai dimuat
-        },
-        columnDefs: [
-          //{ width: '5px', targets: 0 },  // Narrow the first column (for + buttons)
-          //{ width: '150px', targets: [1, 2, 3, 4, 5] }
-        ],
-        "columns": [
-          { data: null, className: 'details-control', orderable: false, defaultContent: '<button class="btn btn-xs btn-default"><i class="fas fa-plus-circle"></i></button>' },
-          {
-            "data": "Id_Komputer", "render": function (data) {
-                  var Edit = '@Url.Action("Maintenance", "ListKomputer")/' + data;
-                  return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-sm btn-edit" data-placement="top" title="Maintenance"> <i class="fas fa-user-edit"></i></a>&nbsp' +
-                         '<button class="btn btn-sm btn-info btn-report" data-id="' + data + '" title="View Report"><i class="fas fa-print"></i></center>'
-
-            },
-          },
-          { "data": "Description", "autowidth": true },
-          { "data": "Computername", "autowidth": true },
-          { "data": "NamaWorkgroup", "autowidth": true },
-          { "data": "Useraccount", "autowidth": true },
-          { "data": "Ipaddress", "autowidth": true },
-          { "data": "NamaUser", "autowidth": true },
-          { "data": "TanggalUpdate", "autowidth": true },
-          {
-            "data": "Id_Komputer", "render": function (data) {
-              var Edit = '@Url.Action("Edit", "ListKomputer")/' + data;
-              var Details = '@Url.Action("Details", "ListKomputer")/' + data;
-              return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-primary btn-sm" data-placement="top" title="Edit"> <i class="fas fa-edit"></i></a>&nbsp;' +
-                '<a href=\"' + Details + '\" class="btn btn-icon waves-light btn-info btn-sm" data-placement="top" title="Detail"> <i class="far fa-file"></i></a></center>'
-            },
-          },
-        ],
-
-        "language":
-        {
-          "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
-          "sProcessing": "Sedang memproses...",
-          "sLengthMenu": "Tampilkan _MENU_ data",
-          "sZeroRecords": "Tidak ditemukan data yang sesuai",
-          "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-          "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
-          "sInfoFiltered": "(disaring dari _MAX_ data keseluruhan)",
-          "sInfoPostFix": "",
-          "sSearch": "Cari:",
-          "sUrl": "",
-            "oPaginate": {
-                "sFirst": "|<",
-                "sPrevious": "<",
-                "sNext": ">",
-                "sLast": ">|"
-            }
+            $.ajax({
+                url: '@Url.Action("PingClient", "ListKomputer")', // controller ASP.NET MVC
+                type: 'POST',
+                data: { ip: ip },
+                success: function (response) {
+                    if (response.success) {
+                        $("#status-" + rowId).html('<span style="color:green;">&#10004;</span>'); // ✅ hijau
+                    } else {
+                        $("#status-" + rowId).html('<span style="color:red;">&#10008;</span>'); // ❌ merah
+                    }
+                },
+                error: function () {
+                    $("#status-" + rowId).html('<span style="color:orange;">&#9888;</span>'); // ⚠ error server
+                }
+            });
         }
-        // Add event listener for opening and closing details
-      });
-      $('#ListKomputersTable').on('click','.btn-report',function(){
-    var Id_Komputer = $(this).data('id');
-    var modal = $('#reportModal');
-    var reportContainer = $('#reportContainer');
+    </script>
 
-    // Load the partial view dynamically
-    $.ajax({
-        url: '@Url.Action("LoadReport", "ListKomputer")',
-        type: 'GET',
-        data: { id: Id_Komputer },
-        success: function (response) {
-            reportContainer.html(response);
-            modal.modal('show');
-        },
-        error: function () {
-            alert('Failed to load the report.');
+    <script>
+        $('#ListKomputersTable,#ListKomputersHistoryTable').on('error.dt', function (e, settings, techNote, message) {
+            Swal.fire({
+                title: "Sesi Habis",
+                text: "Silakan login ulang untuk melanjutkan.",
+                icon: "warning",
+                confirmButtonText: "Login Ulang",
+                allowOutsideClick: false,
+            }).then(function () {
+                window.location.href = '@Url.Action("Login", "Account")';
+            });
+        })
+
+        function format(d) {
+            // `d` is the original data object for the row
+            return `
+            <table class="table child-table display table-bordered bg-gradient-white" style="width:100%">
+            <tr>
+                <th width="15%"><center>Motherboard</center></th>
+                <th width="10%"><center>Processor</center></th>
+                <th width="15%"><center>Operating System</center></th>
+                <th width="10%"><center>Harddisk</center></th>
+                <th width="15%"><center>RAM</center></th>
+                <th width="15%"><center>Lokasi</center></th>
+                <th width="20%"><center>Keterangan</center></th>
+            </tr>
+                <td> ${d.Motherboard}</td>
+                <td> ${d.Processor}</td>
+                <td>${d.Os}</td>
+                <td>${d.Hardisk}</td>
+                <td> ${d.Ram}</td>
+                <td>${d.Lokasi}</td>
+                <td>${d.Keterangan1}</td>
+            </tr>
+            </table>`;
         }
-    });
-});
-      $('#ListKomputersTable tbody').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = ListTable.row(tr);
+        $(document).ready(function () {
+            var ListTable = $('#ListKomputersTable').DataTable({
+                responsive: true,
+                lengthChange: false,
+                scrollY: '360px',
 
-        if (row.child.isShown()) {
-          // If the row is already open, close it
-          row.child.hide();
-          $(this).html('<button class="btn btn-xs btn-default"><i class="fas fa-plus-circle"></i></button>'); // Ubah tombol menjadi +
-          tr.removeClass('shown');
-        } else {
-          // Otherwise, open it
-          row.child(format(row.data())).show();
-          $(this).html('<button class="btn btn-xs btn-danger"><i class="fas fa-minus-circle"></i></button>'); // Ubah tombol menjadi −
-          tr.addClass('shown');
-        }
-      });
+                //processing: true,
+                //serverSide: true,
 
-      var HistoryTable = $('#ListKomputersHistoryTable').DataTable({
-        responsive: true,
-        lengthChange: false,
-        scrollY: '320px',
+                //scrollX: true,  // Mengaktifkan scroll horizontal//scrollX: true,  // Mengaktifkan scroll horizontal
 
-        //processing: true,
-        //serverSide: true,
+                ajax: {
+                    url: "@Url.Action("LoadData", "ListKomputer")", // Ensure correct URL
+                    type: "POST",
+                    dataType: "json",
+                    dataSrc: "data", // Adjust according to your JSON structure
+                },
 
-        //scrollX: true,  // Mengaktifkan scroll horizontal//scrollX: true,  // Mengaktifkan scroll horizontal
+                "initComplete": function (settings, json) {
+                    $('#loadingSpinner').hide();  // Sembunyikan spinner saat tabel selesai dimuat
+                },
+                columnDefs: [
+                    //{ width: '5px', targets: 0 },  // Narrow the first column (for + buttons)
+                    //{ width: '150px', targets: [1, 2, 3, 4, 5] }
+                ],
+                "columns": [
+                    { data: null, className: 'details-control', orderable: false, defaultContent: '<button class="btn btn-xs btn-default"><i class="fas fa-plus-circle"></i></button>' },
+                    {
+                        "data": "Id_Komputer", "render": function (data) {
+                            var Edit = '@Url.Action("Maintenance", "ListKomputer")/' + data;
+                            return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-sm btn-edit" data-placement="top" title="Maintenance"> <i class="fas fa-user-edit"></i></a>&nbsp' +
+                                '<button class="btn btn-sm btn-info btn-report" data-id="' + data + '" title="View Report"><i class="fas fa-print"></i></center>'
 
-        ajax: {
-          url: "@Url.Action("LoadData", "ListKomputer")", // Ensure correct URL
-          type: "POST",
-          dataType: "json",
-          dataSrc: "data", // Adjust according to your JSON structure
-        },
-        "initComplete": function (settings, json) {
-          $('#loadingSpinner').hide();  // Sembunyikan spinner saat tabel selesai dimuat
-        },
-        columnDefs: [
-          //{ width: '5px', targets: 0 },  // Narrow the first column (for + buttons)
-          //{ width: '150px', targets: [1, 2, 3, 4, 5] }
-        ],
-        "columns": [
-          { data: null, className: 'details-control', orderable: false, defaultContent: '<button class="btn btn-xs btn-default"><i class="fas fa-plus-circle"></i></button>' },
-          {
-            "data": "Id_Komputer", "render": function (data) {
-              var Edit = '@Url.Action("Edit", "ListKomputer")/' + data;
-              return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-sm btn-edit" data-placement="top" title="Maintenance"> <i class="fas fa-user-edit"></i></a></center>'
-            },
-          },
-          { "data": "Description", "autowidth": true },
-          { "data": "Computername", "autowidth": true },
-          { "data": "NamaWorkgroup", "autowidth": true },
-          { "data": "Useraccount", "autowidth": true },
-          { "data": "Ipaddress", "autowidth": true },
-          { "data": "NamaUser", "autowidth": true },
-          { "data": "TanggalUpdate", "autowidth": true },
-          {
-            "data": "Id_Komputer", "render": function (data) {
-              var Edit = '@Url.Action("Edit", "ListKomputer")/' + data;
-              var Details = '@Url.Action("Details", "ListKomputer")/' + data;
-              return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-primary btn-sm" data-placement="top" title="Edit"> <i class="fas fa-edit"></i></a>&nbsp;' +
-                '<a href=\"' + Details + '\" class="btn btn-icon waves-light btn-info btn-sm" data-placement="top" title="Detail"> <i class="far fa-file"></i></a></center>'
-            },
-          },
-        ],
+                        },
+                    },
+                    { "data": "Description", "autowidth": true },
+                    { "data": "Computername", "autowidth": true },
+                    { "data": "NamaWorkgroup", "autowidth": true },
+                    { "data": "Useraccount", "autowidth": true },
+                    { "data": "Ipaddress", "autowidth": true },
+                    { "data": "NamaUser", "autowidth": true },
+                    { "data": "TanggalUpdate", "autowidth": true },
+                    {
+                        "data": "Id_Komputer", "render": function (data,type,row) {
+                            var Edit = '@Url.Action("Edit", "ListKomputer")/' + data;
+                            var Details = '@Url.Action("Details", "ListKomputer")/' + data;
+                            return '<a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-primary btn-sm" data-placement="top" title="Edit"> <i class="fas fa-edit"></i></a>&nbsp;' +
+                                '<a href=\"' + Details + '\" class="btn btn-icon waves-light btn-info btn-sm" data-placement="top" title="Detail"> <i class="far fa-file"></i></a>&nbsp;' +
+                                '<button onclick="PingIp(\'' + row.Ipaddress + '\', \'' + data + '\')" class="btn btn-sm btn-warning">Ping</button>' +
+                                '<span id="status-' + data + '" style="margin-left:8px;"></span>'
+                        },
+                    },
+                ],
+                "language":
+                {
+                    "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
+                    "sProcessing": "Sedang memproses...",
+                    "sLengthMenu": "Tampilkan _MENU_ data",
+                    "sZeroRecords": "Tidak ditemukan data yang sesuai",
+                    "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
+                    "sInfoFiltered": "(disaring dari _MAX_ data keseluruhan)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Cari:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "|<",
+                        "sPrevious": "<",
+                        "sNext": ">",
+                        "sLast": ">|"
+                    }
+                }
+                // Add event listener for opening and closing details
+            });
+            $('#ListKomputersTable').on('click', '.btn-report', function () {
+                //$("#reportViewer").html("<p>Loading report...</p>");
+                var Id_Komputer = $(this).data('id');
+                var modal = $('#reportModal');
+                var reportContainer = $('#reportContainer');
 
-        "language":
-        {
-          "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
-          "sProcessing": "Sedang memproses...",
-          "sLengthMenu": "Tampilkan _MENU_ data",
-          "sZeroRecords": "Tidak ditemukan data yang sesuai",
-          "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-          "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
-          "sInfoFiltered": "(disaring dari _MAX_ data keseluruhan)",
-          "sInfoPostFix": "",
-          "sSearch": "Cari:",
-          "sUrl": "",
-            "oPaginate": {
-                "sFirst": "|<",
-                "sPrevious": "<",
-                "sNext": ">",
-                "sLast": ">|"
-            }
-        }
-        // Add event listener for opening and closing details
-      });
-      $('#ListKomputersHistoryTable tbody').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = HistoryTable.row(tr);
 
-        if (row.child.isShown()) {
-          // If the row is already open, close it
-          row.child.hide();
-          $(this).html('<button class="btn btn-xs btn-default"><i class="fas fa-plus-circle"></i></button>'); // Ubah tombol menjadi +
-          tr.removeClass('shown');
-        } else {
-          // Otherwise, open it
-          row.child(format(row.data())).show();
-          $(this).html('<button class="btn btn-xs btn-danger"><i class="fas fa-minus-circle"></i></button>'); // Ubah tombol menjadi −
-          tr.addClass('shown');
-        }
-      });
-        $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
-            ListTable.columns.adjust().draw();
-            HistoryTable.columns.adjust().draw();
-        });
-    });
+                // Load the partial view dynamically
+                $.ajax({
+                    url: '@Url.Action("LoadReport", "ListKomputer")',
+                    type: 'GET',
+                    data: { id: Id_Komputer },
+                    success: function (response) {
+                        reportContainer.html(response);
+                        modal.modal('show');
+                    },
+                    error: function () {
+                        alert('Failed to load the report.');
+                    }
+                });
+
+            });
+            $('#ListKomputersTable tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = ListTable.row(tr);
+
+                if (row.child.isShown()) {
+                    // If the row is already open, close it
+                    row.child.hide();
+                    $(this).html('<button class="btn btn-xs btn-default"><i class="fas fa-plus-circle"></i></button>'); // Ubah tombol menjadi +
+                    tr.removeClass('shown');
+                } else {
+                    // Otherwise, open it
+                    row.child(format(row.data())).show();
+                    $(this).html('<button class="btn btn-xs btn-danger"><i class="fas fa-minus-circle"></i></button>'); // Ubah tombol menjadi −
+                    tr.addClass('shown');
+                }
+            })
+
+            var HistoryTable = $('#ListKomputersHistoryTable').DataTable({
+                responsive: true,
+                lengthChange: false,
+                scrollY: '360px',
+
+                //processing: true,
+                //serverSide: true,
+
+                //scrollX: true,  // Mengaktifkan scroll horizontal//scrollX: true,  // Mengaktifkan scroll horizontal
+
+                ajax: {
+                    url: "@Url.Action("LoadData", "ListKomputer")", // Ensure correct URL
+                    type: "POST",
+                    dataType: "json",
+                    dataSrc: "data", // Adjust according to your JSON structure
+                },
+                "initComplete": function (settings, json) {
+                    $('#loadingSpinner').hide();  // Sembunyikan spinner saat tabel selesai dimuat
+                },
+                columnDefs: [
+                    //{ width: '5px', targets: 0 },  // Narrow the first column (for + buttons)
+                    //{ width: '150px', targets: [1, 2, 3, 4, 5] }
+                ],
+                "columns": [
+                    { data: null, className: 'details-control', orderable: false, defaultContent: '<button class="btn btn-xs btn-default"><i class="fas fa-plus-circle"></i></button>' },
+                    {
+                        "data": "Id_Komputer", "render": function (data) {
+                            var Edit = '@Url.Action("Edit", "ListKomputer")/' + data;
+                            return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-sm btn-edit" data-placement="top" title="Maintenance"> <i class="fas fa-user-edit"></i></a></center>'
+                        },
+                    },
+                    { "data": "Description", "autowidth": true },
+                    { "data": "Computername", "autowidth": true },
+                    { "data": "NamaWorkgroup", "autowidth": true },
+                    { "data": "Useraccount", "autowidth": true },
+                    { "data": "Ipaddress", "autowidth": true },
+                    { "data": "NamaUser", "autowidth": true },
+                    { "data": "TanggalUpdate", "autowidth": true },
+                    {
+                        "data": "Id_Komputer", "render": function (data) {
+                            var Edit = '@Url.Action("Edit", "ListKomputer")/' + data;
+                            var Details = '@Url.Action("Details", "ListKomputer")/' + data;
+                            return '<center><a href=\"' + Edit + '\" class="btn btn-icon waves-light btn-primary btn-sm" data-placement="top" title="Edit"> <i class="fas fa-edit"></i></a>&nbsp;' +
+                                '<a href=\"' + Details + '\" class="btn btn-icon waves-light btn-info btn-sm" data-placement="top" title="Detail"> <i class="far fa-file"></i></a></center>'
+                        },
+                    },
+                ],
+
+                "language":
+                {
+                    "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
+                    "sProcessing": "Sedang memproses...",
+                    "sLengthMenu": "Tampilkan _MENU_ data",
+                    "sZeroRecords": "Tidak ditemukan data yang sesuai",
+                    "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
+                    "sInfoFiltered": "(disaring dari _MAX_ data keseluruhan)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Cari:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "|<",
+                        "sPrevious": "<",
+                        "sNext": ">",
+                        "sLast": ">|"
+                    }
+                }
+                // Add event listener for opening and closing details
+            });
+            $('#ListKomputersHistoryTable tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = HistoryTable.row(tr);
+
+                if (row.child.isShown()) {
+                    // If the row is already open, close it
+                    row.child.hide();
+                    $(this).html('<button class="btn btn-xs btn-default"><i class="fas fa-plus-circle"></i></button>'); // Ubah tombol menjadi +
+                    tr.removeClass('shown');
+                } else {
+                    // Otherwise, open it
+                    row.child(format(row.data())).show();
+                    $(this).html('<button class="btn btn-xs btn-danger"><i class="fas fa-minus-circle"></i></button>'); // Ubah tombol menjadi −
+                    tr.addClass('shown');
+                }
+            });
+            $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+                ListTable.columns.adjust().draw();
+                HistoryTable.columns.adjust().draw();
+            });
+        })
 
     //untuk menampilkan loading saat load table
-    $(document).on('preXhr.dt', function () {
-      $('#loadingSpinner').show();  // Tampilkan spinner saat sedang memuat data
-    });
+        $(document).on('preXhr.dt', function () {
+            $('#loadingSpinner').show();  // Tampilkan spinner saat sedang memuat data
+        });
 
     // Event ketika DataTables selesai memuat data
-    $(document).on('xhr.dt', function () {
-      $('#loadingSpinner').hide();  // Sembunyikan spinner setelah data selesai dimuat
-    });
+        $(document).on('xhr.dt', function () {
+            $('#loadingSpinner').hide();  // Sembunyikan spinner setelah data selesai dimuat
+        });
 
         $(document).ready(function () {
             // Saat tab "DATA KOMPUTER" diklik
@@ -395,7 +435,8 @@
             $('#button-tab-history-listkomputer').on('click', function () {
                 $('#add-button').hide(); // Sembunyikan tombol "Add"
             });
-        });
+        })
+
     </script>
 
 }

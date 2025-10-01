@@ -260,6 +260,21 @@
     <script src="~/Content/toastr/toastr.min.js"></script>
     <!--Telerik-->
     <script src="~/Content/ReportViewer/js/telerikReportViewer-17.0.23.118.min.js"></script>
+    <script>
+    $(document).ajaxError(function (event, xhr, settings) {
+        if (xhr.status === 401) {
+            Swal.fire({
+                title: "Sesi Habis",
+                text: "Sesi login Anda sudah berakhir. Silakan login ulang.",
+                icon: "warning",
+                confirmButtonText: "Login Ulang",
+                allowOutsideClick: false,
+            }).then(function () {
+                window.location.href = '@Url.Action("Login", "Account")';
+            });
+        }
+    });
+    </script>
 
     @RenderSection("scripts", required: false)
 
